@@ -27,9 +27,12 @@ public class TBSLTest extends TestCase
 	public void testDBpediaDanBrown() throws Exception
 	{
 //		String question = "Give me soccer clubs in Premier League.";
-		String question = "Give me all books written by Dan Browns.";
+//		String question = "Give me all books written by Dan Browns.";
+        String question = "列出所有丹·布朗写的书";
+//      String question = "Is the wife of president Obama called Michelle?";
 		TemplateInstantiation ti = TbslDbpedia.INSTANCE.answerQuestion(question);
 		ResultSet rs = DBpediaKnowledgebase.INSTANCE.querySelect(ti.getQuery());
+        System.out.println(ti.getQuery());
 		System.out.println(rs.nextSolution().toString());		
 //		assertTrue(rs.nextSolution().toString().contains("http://diadem.cs.ox.ac.uk/ontologies/real-estate#"));
 //		System.out.println(ti.getQuery());

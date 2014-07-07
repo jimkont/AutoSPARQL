@@ -37,7 +37,7 @@ public class TemplateGenerationTest {
 				Element questionNode = (Element) questionNodes.item(i);
 				//Read question
 				question = ((Element)questionNode.getElementsByTagName("string").item(0)).getChildNodes().item(0).getNodeValue().trim();
-				
+
 				questions.add(question);
 				
 			}
