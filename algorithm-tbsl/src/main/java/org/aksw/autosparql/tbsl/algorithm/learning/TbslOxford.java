@@ -8,7 +8,8 @@ public class TbslOxford extends TBSL
 	
 	private TbslOxford()
 	{
-		super(OxfordKnowledgebase.INSTANCE,new String[]{"tbsl/lexicon/english.lex","tbsl/lexicon/english_oxford.lex"});
+		//super(OxfordKnowledgebase.INSTANCE,new String[]{"tbsl/lexicon/english.lex","tbsl/lexicon/english_oxford.lex"});
+        super(OxfordKnowledgebase.INSTANCE,new String[]{"tbsl/lexicon/chinese.lex"});
 //		PopularityMap map = new PopularityMap(this.getClass().getClassLoader().getResource("dbpedia_popularity.map").getPath(),
 //				 new SparqlQueriable(((RemoteKnowledgebase)this.knowledgebase).getEndpoint(), "cache"));
 //

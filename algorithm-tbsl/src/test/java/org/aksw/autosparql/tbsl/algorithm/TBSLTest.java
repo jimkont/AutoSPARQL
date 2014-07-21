@@ -28,7 +28,7 @@ public class TBSLTest extends TestCase
 	{
 //		String question = "Give me soccer clubs in Premier League.";
 //		String question = "Give me all books written by Dan Browns.";
-        String question = "列出所有丹·布朗写的书";
+        String question = "列出/VB 所有/DT 丹布朗/NNP 写/V 的/U 书/NN";
 //      String question = "Is the wife of president Obama called Michelle?";
 		TemplateInstantiation ti = TbslDbpedia.INSTANCE.answerQuestion(question);
 		ResultSet rs = DBpediaKnowledgebase.INSTANCE.querySelect(ti.getQuery());
@@ -39,25 +39,25 @@ public class TBSLTest extends TestCase
 //		System.out.println(rs.nextSolution());
 	}
 
-	@Test
-	public void testProminence()
-	{
-		Entity bedrooms = new Entity("http://diadem.cs.ox.ac.uk/ontologies/real-estate#bedrooms", "number of bedrooms");		
-		Slot slot = new Slot("p1",SlotType.DATATYPEPROPERTY,Arrays.asList(new String[]{"BEDROOMS"}));		
-		HashMap<Slot, Collection<Entity>> map = new HashMap<>();
-		map.put(slot, Collections.singleton(bedrooms));
-		Map<Slot, Prominences> scores = new SimpleRankingComputation(OxfordKnowledgebase.INSTANCE).computeEntityProminenceScoresWithReasoner(map);
-		assertTrue(scores.values().iterator().next().values().iterator().next()>800);
-	}
-
-	@Test
-	public void testOxford() throws Exception
-	{
-		assertFalse(((LocalKnowledgebase)TbslOxford.INSTANCE.getKnowledgebase()).getModel().isEmpty());
-		String question = "Give me all houses with more than 3 bedrooms.";// and more than 2 bedrooms
-		TemplateInstantiation ti = TbslOxford.INSTANCE.answerQuestion(question);
-		ResultSet rs = OxfordKnowledgebase.INSTANCE.querySelect(ti.getQuery());
-		assertTrue(rs.nextSolution().toString().contains("http://diadem.cs.ox.ac.uk/ontologies/real-estate#"));
-	}
+//	@Test
+//	public void testProminence()
+//	{
+//		Entity bedrooms = new Entity("http://diadem.cs.ox.ac.uk/ontologies/real-estate#bedrooms", "number of bedrooms");
+//		Slot slot = new Slot("p1",SlotType.DATATYPEPROPERTY,Arrays.asList(new String[]{"BEDROOMS"}));
+//		HashMap<Slot, Collection<Entity>> map = new HashMap<>();
+//		map.put(slot, Collections.singleton(bedrooms));
+//		Map<Slot, Prominences> scores = new SimpleRankingComputation(OxfordKnowledgebase.INSTANCE).computeEntityProminenceScoresWithReasoner(map);
+//		assertTrue(scores.values().iterator().next().values().iterator().next()>800);
+//	}
+//
+//	//@Test
+//	public void testOxford() throws Exception
+//	{
+//		assertFalse(((LocalKnowledgebase)TbslOxford.INSTANCE.getKnowledgebase()).getModel().isEmpty());
+//		String question = "Give me all houses with more than 3 bedrooms.";// and more than 2 bedrooms
+//		TemplateInstantiation ti = TbslOxford.INSTANCE.answerQuestion(question);
+//		ResultSet rs = OxfordKnowledgebase.INSTANCE.querySelect(ti.getQuery());
+//		assertTrue(rs.nextSolution().toString().contains("http://diadem.cs.ox.ac.uk/ontologies/real-estate#"));
+//	}
 
 }

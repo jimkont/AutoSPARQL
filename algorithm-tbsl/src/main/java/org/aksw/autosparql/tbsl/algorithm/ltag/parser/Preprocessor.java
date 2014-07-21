@@ -88,6 +88,7 @@ public class Preprocessor {
 		Pattern saveIsThere       = Pattern.compile("((is)|(are))/(VB[A-Z]?).there/(RB)");
 		Pattern passivePattern2b  = Pattern.compile("(((is)|(are)|(was)|(were))/VB[A-Z]?.((.+)\\s\\w+)/VB(N|D))");
 		Pattern passpartPattern   = Pattern.compile("\\s((\\w+)/VBN.by/IN)");
+        Pattern passpartPattern_zh   = Pattern.compile("\\s((\\p{L}+)/V.的/U)");
 		Pattern vpassPattern      = Pattern.compile("\\s(\\w+/VBD.(\\w+)/VBN)");
 		Pattern vpassinPattern    = Pattern.compile("\\s((\\w+)/VPASS.\\w+/IN)");
 		Pattern gerundinPattern   = Pattern.compile("\\s((\\w+)/((VBG)|(VBN)).\\w+/IN)");
@@ -178,6 +179,11 @@ public class Preprocessor {
 			if (VERBOSE) logger.debug("Replacing " + m.group(1) + " by " + m.group(2)+"/PASSPART");
 			condensedstring = condensedstring.replaceFirst(m.group(1),m.group(2)+"/PASSPART");
 		}
+        m = passpartPattern_zh.matcher(condensedstring);
+        while (m.find()) {
+            if (VERBOSE) logger.debug("Replacing " + m.group(1) + " by " + m.group(2)+"/PASSPART");
+            condensedstring = condensedstring.replaceFirst(m.group(1),m.group(2)+"/PASSPART");
+        }
 		m = vpassPattern.matcher(condensedstring);
 		while (m.find()) {
 			if (VERBOSE) logger.debug("Replacing " + m.group(1) + " by " + m.group(2)+"/VPASS");

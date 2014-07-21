@@ -30,7 +30,8 @@ public class Templator {
 	
 	private static final Logger logger = Logger.getLogger(Templator.class);
         
-        String[] GRAMMAR_FILES = {"tbsl/lexicon/english.lex","tbsl/lexicon/english_oxford.lex"};
+    //String[] GRAMMAR_FILES = {"tbsl/lexicon/english.lex","tbsl/lexicon/english_oxford.lex"};
+    String[] GRAMMAR_FILES = {"tbsl/lexicon/chinese.lex"};
 	
 	private String[] noun = {"NN","NNS","NNP","NNPS","NPREP","JJNN","JJNPREP"};
 	private String[] adjective = {"JJ","JJR","JJS","JJH"};
@@ -167,6 +168,8 @@ public class Templator {
 			s = extractSentence(tagged);
 		}
 		taggedInput = tagged;
+        System.out.println("Tagged input:" + tagged);
+
 		String newtagged;
 		if (USE_NER) {
 			newtagged = pp.condenseNominals(pp.findNEs(tagged,s));
@@ -174,8 +177,9 @@ public class Templator {
 		else newtagged = pp.condenseNominals(tagged);
 		
 		newtagged = pp.condense(newtagged);
-		logger.debug("Preprocessed: " + newtagged); 
-        
+		logger.debug("Preprocessed: " + newtagged);
+        System.out.println("Preprocessed:" + newtagged);
+
         parser.parse(newtagged,g);
         
         if (parser.getDerivationTrees().isEmpty()) {

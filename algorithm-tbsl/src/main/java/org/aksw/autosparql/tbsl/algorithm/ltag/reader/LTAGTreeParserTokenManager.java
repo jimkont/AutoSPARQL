@@ -36,25 +36,25 @@ private int jjMoveStringLiteralDfa0_0()
 {
    switch(curChar)
    {
-      case 39:
+      case 39://'
          return jjStopAtPos(0, 10);
-      case 40:
+      case 40://(
          return jjStopAtPos(0, 7);
-      case 41:
+      case 41://)
          return jjStopAtPos(0, 8);
-      case 42:
+      case 42://*
          return jjStopAtPos(0, 5);
-      case 58:
+      case 58://:
          return jjStartNfaWithStates_0(0, 9, 0);
-      case 91:
+      case 91://[
          return jjStopAtPos(0, 1);
-      case 93:
+      case 93://]
          return jjStopAtPos(0, 2);
-      case 94:
+      case 94://^
          return jjStopAtPos(0, 6);
-      case 123:
+      case 123://{
          return jjStopAtPos(0, 3);
-      case 125:
+      case 125://}
          return jjStopAtPos(0, 4);
       default :
          return jjMoveNfa_0(2, 0);
@@ -79,7 +79,7 @@ private int jjMoveNfa_0(int startState, int curPos)
    {
       if (++jjround == 0x7fffffff)
          ReInitRounds();
-      if (curChar < 64)
+      if (curChar < 64) //not A-Z, a-z, 0-9
       {
          long l = 1L << curChar;
          do
@@ -99,12 +99,14 @@ private int jjMoveNfa_0(int startState, int curPos)
       }
       else if (curChar < 128)
       {
+         System.out.println("curChar < 128");
          long l = 1L << (curChar & 077);
          do
          {
             switch(jjstateSet[--i])
             {
                case 2:
+                  System.out.println("case 2");
                   if ((0x7fffffe80000000L & l) != 0L)
                   {
                      if (kind > 11)
@@ -119,12 +121,14 @@ private int jjMoveNfa_0(int startState, int curPos)
                   }
                   break;
                case 0:
+                  System.out.println("case 0");
                   if ((0x7fffffe80000000L & l) == 0L)
                      break;
                   kind = 11;
                   jjCheckNAdd(0);
                   break;
                case 1:
+                  System.out.println("case 1");
                   if ((0x7fffffeL & l) == 0L)
                      break;
                   kind = 12;
@@ -133,6 +137,31 @@ private int jjMoveNfa_0(int startState, int curPos)
                default : break;
             }
          } while(i != startsAt);
+      }
+      else if(Character.UnicodeBlock.of(curChar) == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS)
+      {
+          //System.out.println("Chinese");
+          do
+          {
+              long l = 1L << (curChar & 077);
+              System.out.println("L:"+l);
+              System.out.println(0x7fffffe80000000L & l);
+              System.out.println(0x7fffffeL & l);
+              switch(jjstateSet[--i])
+              {
+                  case 2:
+                      System.out.println("case 2");
+                      kind = 11;
+                      jjCheckNAdd(0);
+                      break;
+                  case 0:
+                      System.out.println("case 0");
+                      kind = 11;
+                      jjCheckNAdd(0);
+                      break;
+                  default : break;
+              }
+          } while(i != startsAt);
       }
       else
       {
@@ -177,25 +206,27 @@ static final long[] jjtoToken = {
 static final long[] jjtoSkip = {
    0x1e000L, 
 };
-protected SimpleCharStream input_stream;
+//protected SimpleCharStream input_stream;
+protected UnicodeCharStream input_stream;
+
 private final int[] jjrounds = new int[2];
 private final int[] jjstateSet = new int[4];
 protected char curChar;
 /** Constructor. */
-public LTAGTreeParserTokenManager(SimpleCharStream stream){
-   if (SimpleCharStream.staticFlag)
+public LTAGTreeParserTokenManager(UnicodeCharStream stream){
+   if (UnicodeCharStream.staticFlag)
       throw new Error("ERROR: Cannot use a static CharStream class with a non-static lexical analyzer.");
    input_stream = stream;
 }
 
 /** Constructor. */
-public LTAGTreeParserTokenManager(SimpleCharStream stream, int lexState){
+public LTAGTreeParserTokenManager(UnicodeCharStream stream, int lexState){
    this(stream);
    SwitchTo(lexState);
 }
 
 /** Reinitialise parser. */
-public void ReInit(SimpleCharStream stream)
+public void ReInit(UnicodeCharStream stream)
 {
    jjmatchedPos = jjnewStateCnt = 0;
    curLexState = defaultLexState;
@@ -211,7 +242,7 @@ private void ReInitRounds()
 }
 
 /** Reinitialise parser. */
-public void ReInit(SimpleCharStream stream, int lexState)
+public void ReInit(UnicodeCharStream stream, int lexState)
 {
    ReInit(stream);
    SwitchTo(lexState);
@@ -284,14 +315,17 @@ public Token getNextToken()
    catch (java.io.IOException e1) { continue EOFLoop; }
    jjmatchedKind = 0x7fffffff;
    jjmatchedPos = 0;
+   System.out.println("curChar="+curChar+" jjmatchedKind:"+jjmatchedKind+" jjmatchedPos:"+jjmatchedPos);
    curPos = jjMoveStringLiteralDfa0_0();
    if (jjmatchedKind != 0x7fffffff)
    {
       if (jjmatchedPos + 1 < curPos)
          input_stream.backup(curPos - jjmatchedPos - 1);
       if ((jjtoToken[jjmatchedKind >> 6] & (1L << (jjmatchedKind & 077))) != 0L)
+      //if (true)
       {
          matchedToken = jjFillToken();
+         System.out.println("matchedToken:" + matchedToken);
          return matchedToken;
       }
       else

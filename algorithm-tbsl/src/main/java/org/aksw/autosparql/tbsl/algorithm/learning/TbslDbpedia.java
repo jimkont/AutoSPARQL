@@ -8,7 +8,8 @@ public class TbslDbpedia extends TBSL
 	
 	private TbslDbpedia()
 	{
-		super(DBpediaKnowledgebase.INSTANCE,new String[]{"tbsl/lexicon/english.lex"});
+		//super(DBpediaKnowledgebase.INSTANCE,new String[]{"tbsl/lexicon/english.lex"});
+        super(DBpediaKnowledgebase.INSTANCE,new String[]{"tbsl/lexicon/chinese.lex"});
 //		PopularityMap map = new PopularityMap(this.getClass().getClassLoader().getResource("dbpedia_popularity.map").getPath(),
 //				 new SparqlQueriable(((RemoteKnowledgebase)this.knowledgebase).getEndpoint(), "cache"));
 //

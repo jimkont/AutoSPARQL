@@ -22,8 +22,9 @@ import org.aksw.autosparql.tbsl.algorithm.sparql.Slot;
 
 public class BasicTemplator {
 	
-	String[] GRAMMAR_FILES = {"tbsl/lexicon/basic_english.lex"};
-	
+	//String[] GRAMMAR_FILES = {"tbsl/lexicon/basic_english.lex"};
+    String[] GRAMMAR_FILES = {"tbsl/lexicon/chinese.lex"};
+
 	PartOfSpeechTagger tagger;
 	LTAGLexicon g;
 	LTAG_Lexicon_Constructor LTAG_Constructor = new LTAG_Lexicon_Constructor();

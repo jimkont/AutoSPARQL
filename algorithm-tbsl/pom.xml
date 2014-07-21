@@ -132,7 +132,13 @@
 			<groupId>net.sf.jgrapht</groupId>
 			<artifactId>jgrapht-core</artifactId>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>net.sf.jga</groupId>
+            <artifactId>jga</artifactId>
+            <version>0.8.3</version>
+        </dependency>
+
+    </dependencies>
 
 	<build>
 		<plugins>

@@ -407,7 +407,7 @@ public class LTAGTreeParser implements LTAGTreeParserConstants {
 
   /** Generated Token Manager. */
   public LTAGTreeParserTokenManager token_source;
-  SimpleCharStream jj_input_stream;
+  UnicodeCharStream jj_input_stream;
   /** Current token. */
   public Token token;
   /** Next token. */
@@ -434,7 +434,7 @@ public class LTAGTreeParser implements LTAGTreeParserConstants {
   }
   /** Constructor with InputStream and supplied encoding */
   public LTAGTreeParser(java.io.InputStream stream, String encoding) {
-    try { jj_input_stream = new SimpleCharStream(stream, encoding, 1, 1); } catch(java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
+    try { jj_input_stream = new UnicodeCharStream(stream, encoding, 1, 1); } catch(java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
     token_source = new LTAGTreeParserTokenManager(jj_input_stream);
     token = new Token();
     jj_ntk = -1;
@@ -460,7 +460,7 @@ public class LTAGTreeParser implements LTAGTreeParserConstants {
 
   /** Constructor. */
   public LTAGTreeParser(java.io.Reader stream) {
-    jj_input_stream = new SimpleCharStream(stream, 1, 1);
+    jj_input_stream = new UnicodeCharStream(stream, 1, 1);
     token_source = new LTAGTreeParserTokenManager(jj_input_stream);
     token = new Token();
     jj_ntk = -1;

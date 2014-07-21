@@ -110,6 +110,7 @@ public class TBSL
 		//		reasoner.prepareSubsumptionHierarchy();
 		setOptions(options);
 		templateGenerator = new Templator(posTagger, wordNet, grammarFiles);
+        templateGenerator.setUNTAGGED_INPUT(false);
 		lemmatizer = new LingPipeLemmatizer();
 	}
 
