@@ -99,14 +99,14 @@ private int jjMoveNfa_0(int startState, int curPos)
       }
       else if (curChar < 128)
       {
-         System.out.println("curChar < 128");
+         //System.out.println("curChar < 128");
          long l = 1L << (curChar & 077);
          do
          {
             switch(jjstateSet[--i])
             {
                case 2:
-                  System.out.println("case 2");
+                  //System.out.println("case 2");
                   if ((0x7fffffe80000000L & l) != 0L)
                   {
                      if (kind > 11)
@@ -121,14 +121,14 @@ private int jjMoveNfa_0(int startState, int curPos)
                   }
                   break;
                case 0:
-                  System.out.println("case 0");
+                  //System.out.println("case 0");
                   if ((0x7fffffe80000000L & l) == 0L)
                      break;
                   kind = 11;
                   jjCheckNAdd(0);
                   break;
                case 1:
-                  System.out.println("case 1");
+                  //System.out.println("case 1");
                   if ((0x7fffffeL & l) == 0L)
                      break;
                   kind = 12;
@@ -144,9 +144,9 @@ private int jjMoveNfa_0(int startState, int curPos)
           do
           {
               long l = 1L << (curChar & 077);
-              System.out.println("L:"+l);
-              System.out.println(0x7fffffe80000000L & l);
-              System.out.println(0x7fffffeL & l);
+              //System.out.println("L:"+l);
+              //System.out.println(0x7fffffe80000000L & l);
+              //System.out.println(0x7fffffeL & l);
               switch(jjstateSet[--i])
               {
                   case 2:

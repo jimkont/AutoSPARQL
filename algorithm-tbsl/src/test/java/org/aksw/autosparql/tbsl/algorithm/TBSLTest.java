@@ -28,7 +28,7 @@ public class TBSLTest extends TestCase
 	{
 //		String question = "Give me soccer clubs in Premier League.";
 //		String question = "Give me all books written by Dan Browns.";
-        String question = "列出/VB 所有/DT 丹布朗/NNP 写/V 的/U 书/NN";
+        String question = "列出/VB 所有/DT 丹布朗/NNP 的/U 书/NN";
 //      String question = "Is the wife of president Obama called Michelle?";
 		TemplateInstantiation ti = TbslDbpedia.INSTANCE.answerQuestion(question);
 		ResultSet rs = DBpediaKnowledgebase.INSTANCE.querySelect(ti.getQuery());
