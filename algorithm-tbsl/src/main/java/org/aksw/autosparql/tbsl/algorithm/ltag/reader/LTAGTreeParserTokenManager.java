@@ -150,12 +150,12 @@ private int jjMoveNfa_0(int startState, int curPos)
               switch(jjstateSet[--i])
               {
                   case 2:
-                      System.out.println("case 2");
+                      //System.out.println("case 2");
                       kind = 11;
                       jjCheckNAdd(0);
                       break;
                   case 0:
-                      System.out.println("case 0");
+                      //System.out.println("case 0");
                       kind = 11;
                       jjCheckNAdd(0);
                       break;
@@ -315,7 +315,7 @@ public Token getNextToken()
    catch (java.io.IOException e1) { continue EOFLoop; }
    jjmatchedKind = 0x7fffffff;
    jjmatchedPos = 0;
-   System.out.println("curChar="+curChar+" jjmatchedKind:"+jjmatchedKind+" jjmatchedPos:"+jjmatchedPos);
+   //System.out.println("curChar="+curChar+" jjmatchedKind:"+jjmatchedKind+" jjmatchedPos:"+jjmatchedPos);
    curPos = jjMoveStringLiteralDfa0_0();
    if (jjmatchedKind != 0x7fffffff)
    {
@@ -325,7 +325,7 @@ public Token getNextToken()
       //if (true)
       {
          matchedToken = jjFillToken();
-         System.out.println("matchedToken:" + matchedToken);
+         //System.out.println("matchedToken:" + matchedToken);
          return matchedToken;
       }
       else

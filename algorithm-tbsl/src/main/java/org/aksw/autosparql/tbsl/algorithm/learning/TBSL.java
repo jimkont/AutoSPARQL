@@ -15,7 +15,7 @@ import java.util.Set;
 import org.aksw.autosparql.commons.nlp.lemma.Lemmatizer;
 import org.aksw.autosparql.commons.nlp.lemma.LingPipeLemmatizer;
 import org.aksw.autosparql.commons.nlp.pos.PartOfSpeechTagger;
-import org.aksw.autosparql.commons.nlp.pos.StanfordPartOfSpeechTagger;
+import org.aksw.autosparql.commons.nlp.pos.LTPPartOfSpeechTagger;
 import org.aksw.autosparql.commons.nlp.wordnet.WordNet;
 import org.aksw.autosparql.tbsl.algorithm.knowledgebase.Knowledgebase;
 import org.aksw.autosparql.tbsl.algorithm.learning.ranking.Ranking;
@@ -84,12 +84,12 @@ public class TBSL
 	private static final String DEFAULT_WORDNET_PROPERTIES_FILE = "tbsl/wordnet_properties.xml";
 
 	public TBSL(Knowledgebase knowledgebase,String[] grammarFiles){
-		this(knowledgebase, StanfordPartOfSpeechTagger.INSTANCE, WordNet.INSTANCE, new Options(),grammarFiles);
+		this(knowledgebase, LTPPartOfSpeechTagger.INSTANCE, WordNet.INSTANCE, new Options(),grammarFiles);
 		//this(knowledgebase, StanfordPartOfSpeechTagger.INSTANCE, new WordNet(DEFAULT_WORDNET_PROPERTIES_FILE), new Options(), null);
 	}
 
 	public TBSL(Knowledgebase knowledgebase, WordNet wordNet,String[] grammarFiles){
-		this(knowledgebase, StanfordPartOfSpeechTagger.INSTANCE, wordNet, new Options(),grammarFiles);
+		this(knowledgebase, LTPPartOfSpeechTagger.INSTANCE, wordNet, new Options(),grammarFiles);
 	}
 
 	public TBSL(Knowledgebase knowledgebase, PartOfSpeechTagger posTagger, WordNet wordNet, Options options/*, ExtractionDBCache cache*/,String[] grammarFiles){
@@ -110,7 +110,7 @@ public class TBSL
 		//		reasoner.prepareSubsumptionHierarchy();
 		setOptions(options);
 		templateGenerator = new Templator(posTagger, wordNet, grammarFiles);
-        templateGenerator.setUNTAGGED_INPUT(false);
+        templateGenerator.setUNTAGGED_INPUT(true);
 		lemmatizer = new LingPipeLemmatizer();
 	}
 

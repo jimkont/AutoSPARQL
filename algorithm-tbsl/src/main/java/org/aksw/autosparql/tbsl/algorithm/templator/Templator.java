@@ -181,7 +181,8 @@ public class Templator {
         System.out.println("Preprocessed:" + newtagged);
 
         parser.parse(newtagged,g);
-        
+        System.out.println("DerivationTrees:" + parser.getDerivationTrees().toString());
+
         if (parser.getDerivationTrees().isEmpty()) {
             parser.clear(g,parser.getTemps());
             clearAgain = false;
@@ -190,6 +191,7 @@ public class Templator {
         else {
         try {
         	parser.buildDerivedTrees(g);
+            System.out.println("DerivationTrees:" + parser.getDerivedTrees().toString());
         } catch (ParseException e) {
         	if (VERBOSE) logger.error("[Templator.java] ParseException at '" + e.getMessage() + "'", e);
         }
