@@ -33,7 +33,7 @@ public class AGISTISEntityDisambiguation {
 	private Knowledgebase knowledgebase;
 	private SimpleIRIShortFormProvider iriSfp = new SimpleIRIShortFormProvider();
     private static final URLlib urllib = new URLlib();
-    private static final String url = "http://139.18.2.164:8080";
+    private static final String url = "http://139.18.2.164:8080/AGDISTIS";
 
 	public AGISTISEntityDisambiguation(Knowledgebase knowledgebase) {
 		this.knowledgebase = knowledgebase;
@@ -65,7 +65,7 @@ public class AGISTISEntityDisambiguation {
         String params = URLEncoder.encode("type", "UTF-8") + "=" + URLEncoder.encode("agdistis", "UTF-8");
         params += "&" + URLEncoder.encode("text", "UTF-8") + "=" + URLEncoder.encode(text, "UTF-8");
 
-        StringBuffer content = urllib.HttpPostRequest("http://139.18.2.164:8080/AGDISTIS", params);
+        StringBuffer content = urllib.HttpPostRequest(url, params);
         JSONParser parser = new JSONParser();
         try{
             Object obj = parser.parse(content.toString());
