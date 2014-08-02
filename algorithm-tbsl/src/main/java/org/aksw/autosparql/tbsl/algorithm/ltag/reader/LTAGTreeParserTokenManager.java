@@ -138,7 +138,7 @@ private int jjMoveNfa_0(int startState, int curPos)
             }
          } while(i != startsAt);
       }
-      else if(Character.UnicodeBlock.of(curChar) == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS)
+      else if((Character.UnicodeBlock.of(curChar) == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS) || (curChar == '·') )
       {
           //System.out.println("Chinese");
           do
