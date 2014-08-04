@@ -504,6 +504,67 @@ private int jjMoveNfa_0(int startState, int curPos)
             }
          } while(i != startsAt);
       }
+      else if ((Character.UnicodeBlock.of(curChar) == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS) || (curChar == '·'))
+      {
+          long l = 1L << ('e' & 077);
+          do
+          {
+              switch(jjstateSet[--i])
+              {
+                  case 4:
+                      if ((0x7fffffe87fffffeL & l) != 0L)
+                          jjCheckNAddTwoStates(3, 4);
+                      if ((0x7fffffe87fffffeL & l) != 0L)
+                      {
+                          if (kind > 21)
+                              kind = 21;
+                          jjCheckNAdd(2);
+                      }
+                      break;
+                  case 0:
+                      if ((0x7fffffe87fffffeL & l) != 0L)
+                          jjCheckNAddTwoStates(3, 4);
+                      if ((0x7fffffe87fffffeL & l) != 0L)
+                      {
+                          if (kind > 21)
+                              kind = 21;
+                          jjCheckNAdd(2);
+                      }
+                      if (curChar == 108)
+                          jjstateSet[jjnewStateCnt++] = 1;
+                      break;
+                  case 2:
+                      if ((0x7fffffe87fffffeL & l) == 0L)
+                          break;
+                      if (kind > 21)
+                          kind = 21;
+                      jjCheckNAdd(2);
+                      break;
+                  case 3:
+                      if ((0x7fffffe87fffffeL & l) != 0L)
+                          jjCheckNAddTwoStates(3, 4);
+                      break;
+                  case 5:
+                      if ((0x7fffffe87fffffeL & l) == 0L)
+                          break;
+                      if (kind > 22)
+                          kind = 22;
+                      jjstateSet[jjnewStateCnt++] = 5;
+                      break;
+                  case 7:
+                      if ((0x7fffffe07fffffeL & l) == 0L)
+                          break;
+                      if (kind > 23)
+                          kind = 23;
+                      jjstateSet[jjnewStateCnt++] = 7;
+                      break;
+                  case 9:
+                      jjAddStates(0, 1);
+                      break;
+                  default : break;
+              }
+          } while(i != startsAt);
+      }
       else
       {
          int i2 = (curChar & 0xff) >> 6;
