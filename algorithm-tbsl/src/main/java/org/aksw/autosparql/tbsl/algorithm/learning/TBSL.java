@@ -174,7 +174,8 @@ public class TBSL
 		//2. Entity URI Disambiguation
 		logger.debug("Running entity disambiguation...");
 		monitor.start();
-		SimpleEntityDisambiguation entityDisambiguation = new SimpleEntityDisambiguation(knowledgebase);
+//		SimpleEntityDisambiguation entityDisambiguation = new SimpleEntityDisambiguation(knowledgebase);
+        AGISTISEntityDisambiguation entityDisambiguation = new AGISTISEntityDisambiguation(knowledgebase);
 		Map<Template, Map<Slot, Collection<Entity>>> template2Allocations = entityDisambiguation.performEntityDisambiguation(templates);
 		monitor.stop();
 		logger.trace("Done in " + monitor.getLastValue() + "ms.");

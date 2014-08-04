@@ -5,6 +5,8 @@ import org.aksw.autosparql.tbsl.algorithm.knowledgebase.Knowledgebase;
 import org.aksw.autosparql.tbsl.algorithm.sparql.Slot;
 import org.aksw.autosparql.tbsl.algorithm.sparql.SlotType;
 import org.aksw.autosparql.tbsl.algorithm.sparql.Template;
+
+import java.io.*;
 import java.net.URLEncoder;
 import org.apache.log4j.Logger;
 import org.dllearner.common.index.Index;
@@ -13,9 +15,6 @@ import org.dllearner.common.index.IndexResultSet;
 import org.semanticweb.owlapi.model.IRI;
 import org.semanticweb.owlapi.util.SimpleIRIShortFormProvider;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.util.*;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.MutablePair;
@@ -33,11 +32,36 @@ public class AGISTISEntityDisambiguation {
 	private Knowledgebase knowledgebase;
 	private SimpleIRIShortFormProvider iriSfp = new SimpleIRIShortFormProvider();
     private static final URLlib urllib = new URLlib();
-    private static final String url = "http://139.18.2.164:8080/AGDISTIS";
+    private static final String agistis_url = "http://139.18.2.164:8080/AGDISTIS_ZH";
+//    private static final String agistis_url = "http://127.0.0.1:8080/AGDISTIS";
+    private static final String property_names_path = "./algorithm-tbsl/src/main/resources/property_names_zh.txt";
+    private static Map<String, String> propertyNameMap;
 
 	public AGISTISEntityDisambiguation(Knowledgebase knowledgebase) {
 		this.knowledgebase = knowledgebase;
+        propertyNameMap = readPropertyNames(property_names_path);
 	}
+
+    public Map<String, String> readPropertyNames(String fileName) {
+        Map<String, String> result = new HashMap<String, String>();
+
+        try{
+            Scanner sc = new Scanner(new File(fileName));
+            while ( sc.hasNext() ){
+                String line = sc.nextLine();
+                String tokens[] = line.split("\t");
+                if(tokens.length == 2){
+                    String label = tokens[0];
+                    String url = tokens[1];
+                    result.put(label, url);
+                }
+            }
+        }catch(FileNotFoundException e){
+            e.printStackTrace();
+        }
+
+        return result;
+    }
 
 	public Map<Template, Map<Slot, Collection<Entity>>> performEntityDisambiguation(Collection<Template> templates){
 		Map<Template, Map<Slot, Collection<Entity>>> template2Allocations = new HashMap<Template, Map<Slot,Collection<Entity>>>();
@@ -65,7 +89,7 @@ public class AGISTISEntityDisambiguation {
         String params = URLEncoder.encode("type", "UTF-8") + "=" + URLEncoder.encode("agdistis", "UTF-8");
         params += "&" + URLEncoder.encode("text", "UTF-8") + "=" + URLEncoder.encode(text, "UTF-8");
 
-        StringBuffer content = urllib.HttpPostRequest(url, params);
+        StringBuffer content = urllib.HttpPostRequest(agistis_url, params);
         JSONParser parser = new JSONParser();
         try{
             Object obj = parser.parse(content.toString());
@@ -73,7 +97,10 @@ public class AGISTISEntityDisambiguation {
 
             for(Object jObject: array){
                 JSONObject jobj = (JSONObject) jObject;
-                links.add(new MutablePair(jobj.get("disambiguatedURL"), jobj.get("namedEntity")));
+                String url = (String) jobj.get("disambiguatedURL");
+                url = url.replace("http://dbpedia.org", "http://zh.dbpedia.org");
+                String label = (String) jobj.get("namedEntity");
+                links.add(new MutablePair(url, label));
             }
         }catch(ParseException pe){
             pe.printStackTrace();
@@ -81,10 +108,24 @@ public class AGISTISEntityDisambiguation {
         return links;
     }
 
+    public static ArrayList<Pair<String, String>> getCandidateProperties(Slot slot) throws Exception{
+        ArrayList<Pair<String, String>> links = new ArrayList<Pair<String, String>>();
+
+        List<String> words = slot.getWords();
+        String text = "";
+        for(String word: words){
+            if(propertyNameMap.containsKey(word)){
+                links.add(new MutablePair(propertyNameMap.get(word), word));
+            }
+        }
+
+        return links;
+    }
 	/** get sorted list of entities
 	 */
 	private Collection<Entity> getCandidateEntities(Slot slot){
-		logger.trace("Generating entity candidates for slot " + slot + "...");
+//		logger.trace("Generating entity candidates for slot " + slot + "...");
+        System.out.println("Generating entity candidates for slot " + slot + "...");
 		Set<Entity> candidateEntities = new HashSet<Entity>();
 		if(slot.getSlotType() == SlotType.RESOURCE){
 			List<String> words = slot.getWords();
@@ -96,14 +137,38 @@ public class AGISTISEntityDisambiguation {
             try{
                 ArrayList<Pair<String, String>> links = getCandidateEntities(text);
                 for(Pair<String, String> pair: links){
-                    candidateEntities.add(new Entity(pair.getLeft(), pair.getRight()));
+                    String uri = pair.getLeft();
+                    if(uri == null) continue;
+
+                    String label = pair.getRight();
+                    candidateEntities.add(new Entity(uri, label));
+                    System.out.println("uri,label -> " + uri + "," + label);
                 }
             }catch (Exception e){
                 logger.debug("AGISTIS Disambiguation exception:" + text);
                 e.printStackTrace();
             }
 
-		} else {
+		}if(slot.getSlotType() == SlotType.PROPERTY){
+            System.out.println("PROPERTY Disambiguation");
+
+            try {
+                ArrayList<Pair<String, String>> links = getCandidateProperties(slot);
+                for(Pair<String, String> pair: links){
+                    String uri = pair.getLeft();
+                    if(uri == null) continue;
+
+                    String label = pair.getRight();
+                    candidateEntities.add(new Entity(uri, label));
+                    System.out.println("uri,label -> " + uri + "," + label);
+                }
+            }catch (Exception e){
+                logger.debug("AGISTIS Property Disambiguation exception:" + slot.toString());
+                e.printStackTrace();
+            }
+        }
+        else
+        {
 			Index index = getIndexForSlot(slot);
 			List<String> words = slot.getWords();
 			for(String word : words){

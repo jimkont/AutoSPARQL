@@ -30,12 +30,17 @@ public class TBSLTest extends TestCase
 //		String question = "Give me all books written by Dan Browns.";
         //String question = "列出/VB 所有/DT 丹布朗/NNP 的/U 书/NN";
         //String question = "列出 所有 丹·布朗 的 书";
-        String question = "宾夕法尼亚州的总面积";
+        String question = "上海的总面积";
 //      String question = "Is the wife of president Obama called Michelle?";
 		TemplateInstantiation ti = TbslDbpedia.INSTANCE.answerQuestion(question);
 		ResultSet rs = DBpediaKnowledgebase.INSTANCE.querySelect(ti.getQuery());
         System.out.println(ti.getQuery());
-		System.out.println(rs.nextSolution().toString());		
+        if(rs.hasNext()){
+            System.out.println(rs.nextSolution().toString());
+        }else{
+            System.out.println("none");
+        }
+
 //		assertTrue(rs.nextSolution().toString().contains("http://diadem.cs.ox.ac.uk/ontologies/real-estate#"));
 //		System.out.println(ti.getQuery());
 //		System.out.println(rs.nextSolution());

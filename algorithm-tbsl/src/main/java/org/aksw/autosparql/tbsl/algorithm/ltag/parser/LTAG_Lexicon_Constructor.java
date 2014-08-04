@@ -118,6 +118,5 @@ public class LTAG_Lexicon_Constructor {
 
 		g.addTrees(trees, semantics);
 		return;
-
 	}
 }
