@@ -44,6 +44,7 @@ public class RemoteKnowledgebase extends Knowledgebase {
 	@Override public ResultSet querySelect(String query)
 	{
 		if (cache == null) {
+            System.out.println("endpoint" + endpoint.getURL().toString());
 			QueryEngineHTTP qe = new QueryEngineHTTP(endpoint.getURL().toString(), query);
 			qe.setDefaultGraphURIs(endpoint.getDefaultGraphURIs());
 			return qe.execSelect();
