@@ -160,6 +160,7 @@ public class Templator {
 		String tagged;
 		if (UNTAGGED_INPUT) {		
 			s = pp.normalize(s);
+            System.out.println("normalize input:" + s);
 			tagged = tagger.tag(s);
 			logger.debug("Tagged input: " + tagged);
 		}
@@ -181,6 +182,7 @@ public class Templator {
         System.out.println("Preprocessed:" + newtagged);
 
         parser.parse(newtagged,g);
+
         System.out.println("DerivationTrees:" + parser.getDerivationTrees().toString());
 
         if (parser.getDerivationTrees().isEmpty()) {
@@ -191,7 +193,7 @@ public class Templator {
         else {
         try {
         	parser.buildDerivedTrees(g);
-            System.out.println("DerivationTrees:" + parser.getDerivedTrees().toString());
+            //System.out.println("DerivationTrees:" + parser.getDerivedTrees().toString());
         } catch (ParseException e) {
         	if (VERBOSE) logger.error("[Templator.java] ParseException at '" + e.getMessage() + "'", e);
         }

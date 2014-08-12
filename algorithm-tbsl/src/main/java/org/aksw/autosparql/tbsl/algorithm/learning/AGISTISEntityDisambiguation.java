@@ -32,8 +32,8 @@ public class AGISTISEntityDisambiguation {
 	private Knowledgebase knowledgebase;
 	private SimpleIRIShortFormProvider iriSfp = new SimpleIRIShortFormProvider();
     private static final URLlib urllib = new URLlib();
-    private static final String agistis_url = "http://139.18.2.164:8080/AGDISTIS_ZH";
-//    private static final String agistis_url = "http://127.0.0.1:8080/AGDISTIS";
+//    private static final String agistis_url = "http://139.18.2.164:8080/AGDISTIS_ZH";
+    private static final String agistis_url = "http://127.0.0.1:8080/AGDISTIS";
     private static final String property_names_path = "./algorithm-tbsl/src/main/resources/property_names_zh.txt";
     private static Map<String, String> propertyNameMap;
 
@@ -98,7 +98,7 @@ public class AGISTISEntityDisambiguation {
             for(Object jObject: array){
                 JSONObject jobj = (JSONObject) jObject;
                 String url = (String) jobj.get("disambiguatedURL");
-                url = url.replace("http://dbpedia.org", "http://zh.dbpedia.org");
+                //url = url.replace("http://dbpedia.org", "http://zh.dbpedia.org");
                 String label = (String) jobj.get("namedEntity");
                 links.add(new MutablePair(url, label));
             }

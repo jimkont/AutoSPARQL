@@ -16,10 +16,16 @@ public class Preprocessor {
 	private static final Logger logger = Logger.getLogger(Preprocessor.class);
 
 	static final String[] genericReplacements = { "[!?.,;]", "" };
+    static final String[] genericReplacements_zh = { "[！？。，；]", "" };
+    static final String[] chineseReplacements = { "[了]", "" };
+
 	static final String[] englishReplacements = { "don't", "do not", "doesn't", "does not" };
         static final String[] hackReplacements = { " 1 "," one "," 2 "," two "," 3 "," three "," 4 "," four "," 5 "," five "," 6 "," six "," 7 "," seven ",
         " 8 "," eight "," 9 "," nine "," 10 "," ten "," 11 "," eleven "," 12 "," twelve "," 13 "," thirteen "," 14 "," fourteen "," 15 "," fifteen ",
         " 16 "," sixteen "," 17 "," seventeen "," 18 "," eighteen "," 19 "," nineteen "," 20 "," twenty "};
+    static final String[] hackReplacements_zh = { " 1 "," 一 "," 2 "," 二 "," 3 "," 三 "," 4 "," 四 "," 5 "," 五 "," 6 "," 六 "," 7 "," 七 ",
+            " 8 "," 八 "," 9 "," 九 "," 10 "," 十 "," 11 "," 十一 "," 12 "," 十二 "," 13 "," 十三 "," 14 "," 十四 "," 15 "," 十五 ",
+            " 16 "," 十六 "," 17 "," 十七 "," 18 "," 十八 "," 19 "," 十九 "," 20 "," 二十 "};
 	static boolean USE_NER;
 	static boolean VERBOSE;
 	static NER ner;
@@ -51,9 +57,11 @@ public class Preprocessor {
 		replacements.addAll(Arrays.asList(repl));
 		replacements.addAll(Arrays.asList(englishReplacements));
 		replacements.addAll(Arrays.asList(genericReplacements));
-                replacements.addAll(Arrays.asList(hackReplacements));
+        replacements.addAll(Arrays.asList(genericReplacements_zh));
+        replacements.addAll(Arrays.asList(chineseReplacements));
+        replacements.addAll(Arrays.asList(hackReplacements));
 
-                s = s.replaceAll(",\\s"," and ").replaceAll(" and but "," but ");
+        s = s.replaceAll(",\\s"," and ").replaceAll(" and but "," but ");
 		for (int i = 0; i < replacements.size(); i += 2) {
 			s = s.replaceAll(replacements.get(i), replacements.get(i + 1));
 		}
@@ -77,6 +85,7 @@ public class Preprocessor {
 		Pattern howManyPattern    = Pattern.compile("(how/WRB.many/JJ)"); 
 		Pattern howAdjPattern     = Pattern.compile("(\\w+/WRB.(\\w+)(?<!many)/JJ)"); 
 		Pattern thesameasPattern  = Pattern.compile("(the/DT.same/JJ.(\\w+)/NN.as/IN)");
+        Pattern themostPattern  = Pattern.compile("(最/RB.(\\p{L}+)/JJ.的/IN)");
 		Pattern nprepPattern      = Pattern.compile("\\s((\\w+)/NNS?.of/IN)");
 		Pattern didPattern        = Pattern.compile("(?i)(\\s((did)|(do)|(does))/VB.?)\\s"); 
 		Pattern prepfrontPattern  = Pattern.compile("(\\A\\w+/((TO)|(IN)).)\\w+/WDT"); // TODO (Nicht ganz sauber. Bei P-Stranding immer zwei Querys, hier nur eine.)
@@ -99,7 +108,17 @@ public class Preprocessor {
 //              Pattern adjnnpPattern     = Pattern.compile("((\\w+)(?<!many)/JJ.(\\w+)/NNP(S)?)");
 		Pattern adjnounPattern    = Pattern.compile("((\\w+)(?<!many)/JJ.(\\w+)/NN(S)?(\\s|\\z))");
 		Pattern adjnprepPattern   = Pattern.compile("((\\w+)(?<!many)/JJ.(\\w+)/NPREP)");
-		
+
+        //副。。
+        //什么时候
+
+        //Chinese patterns
+        m = themostPattern.matcher(condensedstring);
+        while (m.find()) {
+            if (VERBOSE) logger.debug("Replacing " + m.group(1) + " by 最" + m.group(2)+"的/JJS");
+            condensedstring = condensedstring.replaceFirst(m.group(1),"最" + m.group(2)+"的/JJS");
+        }
+
 		m = compAdjPattern.matcher(condensedstring); 
 		while (m.find()) {
 			if (VERBOSE) logger.debug("Replacing " + m.group(1) + " by " + m.group(2)+"/JJR");
