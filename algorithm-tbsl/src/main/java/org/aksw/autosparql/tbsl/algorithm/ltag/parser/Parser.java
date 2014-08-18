@@ -77,11 +77,12 @@ public class Parser {
 		
 		
 		if (SHOW_GRAMMAR) {
-			logger.debug(parseGrammar);
+			//logger.debug(parseGrammar);
+            System.out.println("parseGrammar:" + parseGrammar);
 		}
 		if (SHOW_LEXICAL_COVERAGE) {
-			logger.debug("# OF TREES FOUND: " + parseGrammar.size());
-			logger.debug("# OF INPUT TOKENS: " + n);
+            System.out.println("# OF TREES FOUND: " + parseGrammar.size());
+            System.out.println("# OF INPUT TOKENS: " + n);
 		}
 
 		List<Pair<TreeNode, Short>> initTrees = parseGrammar.getInitTrees();

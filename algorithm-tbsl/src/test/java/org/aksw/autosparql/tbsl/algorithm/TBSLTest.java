@@ -30,10 +30,11 @@ public class TBSLTest extends TestCase
 //		String question = "Give me all books written by Dan Browns.";
         //String question = "列出/VB 所有/DT 丹布朗/NNP 的/U 书/NN";
         //String question = "列出 所有 丹·布朗 的 书";
-        //String question = "加拿大最大的城市的人口数？";
-        String question = "加拿大最大的城市？";
+        String question = "有多少编程语言？";
+        //String question = "加拿大最大的城市？";
         //String question = "上海的总面积";
-        //String question = "宾夕法尼亚州的总面积。";
+        //String question = "牛津大学的官方颜色是什么？";
+        //String question = "中国是什么？";
 
 //      String question = "Is the wife of president Obama called Michelle?";
 		TemplateInstantiation ti = TbslDbpedia.INSTANCE.answerQuestion(question);

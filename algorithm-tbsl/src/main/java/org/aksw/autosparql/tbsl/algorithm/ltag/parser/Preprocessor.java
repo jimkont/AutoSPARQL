@@ -68,7 +68,11 @@ public class Preprocessor {
 
 		return s;
 	}
-	
+
+    public String condenseNN(String taggedstring){//TODO: dictionary based condense
+        return taggedstring;
+    }
+
 	public String condense(String taggedstring) {
 		
 		/* condense: 
@@ -255,7 +259,9 @@ public class Preprocessor {
 			if (VERBOSE) logger.debug("Replacing " + m.group(1) + " by " + m.group(2)+"_"+m.group(3)+"/NPREP");
 			condensedstring = condensedstring.replaceFirst(m.group(1),m.group(2)+"_"+m.group(3)+"/NPREP");
 		}
-		
+
+        condensedstring = condenseNominals(condensedstring);
+
 		return condensedstring;
 	}
 
@@ -264,15 +270,15 @@ public class Preprocessor {
 		String flat = s;
 		
 		Matcher m;
-		Pattern quotePattern1 = Pattern.compile("``/``(\\s)?(\\w+(/\\w+\\s)).*''/''");
+		Pattern quotePattern1 = Pattern.compile("``/``(\\s)?(\\p{L}+(/\\p{L}+\\s)).*''/''");
 		Pattern quotePattern2 = Pattern.compile("(``/``((.*)_)''/'')");
-		Pattern nnpPattern    = Pattern.compile("\\s?((\\w+)/NNP[S]?\\s(\\w+))/NNP[S]?(\\W|$)");
-		Pattern nnPattern     = Pattern.compile("\\s?((\\w+)/NN[S]?\\s(\\w+))/NN[S]?(\\W|$)");
-		Pattern nnnnpPattern  = Pattern.compile("\\s?((\\w+)/NNP[S]?\\s(\\w+)/NN[S]?)(\\W|$)");
+		Pattern nnpPattern    = Pattern.compile("\\s?((\\p{L}+)/NNP[S]?\\s(\\p{L}+))/NNP[S]?(\\W|$)");
+		Pattern nnPattern     = Pattern.compile("\\s?((\\p{L}+)/NN[S]?\\s(\\p{L}+))/NN[S]?(\\W|$)");
+		Pattern nnnnpPattern  = Pattern.compile("\\s?((\\p{L}+)/NNP[S]?\\s(\\p{L}+)/NN[S]?)(\\W|$)");
 
 		m = quotePattern1.matcher(flat);
 		while (m.find()) {
-			flat = flat.replaceFirst(m.group(3),"_");
+			flat = flat.replaceFirst(m.group(3),"");
 			m = quotePattern1.matcher(flat);
 		}
 		m = quotePattern2.matcher(flat);
@@ -282,26 +288,26 @@ public class Preprocessor {
 		
 		m = nnpPattern.matcher(flat);
 		while (m.find()) {
-			flat = flat.replaceFirst(m.group(1),m.group(2) + "_" + m.group(3));
+			flat = flat.replaceFirst(m.group(1),m.group(2) + "" + m.group(3));
 			m = nnpPattern.matcher(flat);
 		}
 		m = nnpPattern.matcher(flat);
 		while (m.find()) {
-			flat = flat.replaceFirst(m.group(1),m.group(2) + "_" + m.group(3));
+			flat = flat.replaceFirst(m.group(1),m.group(2) + "" + m.group(3));
 			m = nnpPattern.matcher(flat);
 		}
 		m = nnPattern.matcher(flat);
 		while (m.find()) {
-			flat = flat.replaceFirst(m.group(1),m.group(2) + "_" + m.group(3));
+			flat = flat.replaceFirst(m.group(1),m.group(2) + "" + m.group(3));
 			m = nnPattern.matcher(flat);
 		}
 		m = nnnnpPattern.matcher(flat);
 		while (m.find()) {
-			flat = flat.replaceFirst(m.group(1),m.group(2) + "_" + m.group(3) + "/NNP" + m.group(4));
+			flat = flat.replaceFirst(m.group(1),m.group(2) + "" + m.group(3) + "/NNP" + m.group(4));
 			m = nnnnpPattern.matcher(flat);
 		}
-		
-		return flat;
+
+        return flat;
 	}
 	
 	public String findNEs(String tagged,String untagged) {
@@ -347,7 +353,7 @@ public class Preprocessor {
 				}
 			}
 		}
-		
+
 		return out;
 	}
 	
