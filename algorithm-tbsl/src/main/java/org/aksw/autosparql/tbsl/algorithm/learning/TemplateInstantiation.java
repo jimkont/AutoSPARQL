@@ -39,7 +39,7 @@ public class TemplateInstantiation {
 	
 	public Query asQuery(){
 		ParameterizedSparqlString query = new ParameterizedSparqlString(template.getQuery().toString());
-		
+		System.out.println("template:"+template.getQuery().toString());
 		for (Entry<Slot, Entity> entry : allocations.entrySet()) {
 			Slot slot = entry.getKey();
 			Entity entity = entry.getValue();

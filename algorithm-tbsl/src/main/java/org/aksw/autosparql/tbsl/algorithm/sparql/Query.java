@@ -185,7 +185,7 @@ public class Query implements Serializable {
                             groupBy = "";
                             for (SPARQL_Term t : selTerms) {
                                 if (!t.toString().contains("COUNT"))
-                                    groupBy += t.toString() + " ";                                    
+                                    groupBy += t.toString() + " ";
                                 }
                         }
 		}

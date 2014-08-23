@@ -169,26 +169,22 @@ public class AGISTISEntityDisambiguation {
         }
         else
         {
-			Index index = getIndexForSlot(slot);
-			List<String> words = slot.getWords();
-			for(String word : words){
-				
-				// disable system.out
-				PrintStream out = System.out;
-				System.setOut(new PrintStream(new OutputStream() {@Override public void write(int arg0) throws IOException {}}));
-				IndexResultSet rs = index.getResourcesWithScores(word, 10);
-				// enable again
-				System.setOut(out);
-				for(IndexResultItem item : rs.getItems()){
-					String uri = item.getUri();
-					String label = item.getLabel();
-					if(label == null){
-						label = iriSfp.getShortForm(IRI.create(uri));
-					}
-					candidateEntities.add(new Entity(uri, label));
+            System.out.println("Other Disambiguation");
+
+            try {
+                ArrayList<Pair<String, String>> links = getCandidateProperties(slot);
+                for(Pair<String, String> pair: links){
+                    String uri = pair.getLeft();
+                    if(uri == null) continue;
+
+                    String label = pair.getRight();
+                    candidateEntities.add(new Entity(uri, label));
                     System.out.println("uri,label -> " + uri + "," + label);
-				}
-			}
+                }
+            }catch (Exception e){
+                logger.debug("AGISTIS Property Disambiguation exception:" + slot.toString());
+                e.printStackTrace();
+            }
 		}
 		logger.debug("Found " + candidateEntities.size() + " entities for slot "+slot+": "+candidateEntities);
 		return candidateEntities;

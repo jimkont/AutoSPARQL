@@ -70,6 +70,9 @@ public class Preprocessor {
 	}
 
     public String condenseNN(String taggedstring){//TODO: dictionary based condense
+
+
+
         return taggedstring;
     }
 
@@ -273,7 +276,8 @@ public class Preprocessor {
 		Pattern quotePattern1 = Pattern.compile("``/``(\\s)?(\\p{L}+(/\\p{L}+\\s)).*''/''");
 		Pattern quotePattern2 = Pattern.compile("(``/``((.*)_)''/'')");
 		Pattern nnpPattern    = Pattern.compile("\\s?((\\p{L}+)/NNP[S]?\\s(\\p{L}+))/NNP[S]?(\\W|$)");
-		Pattern nnPattern     = Pattern.compile("\\s?((\\p{L}+)/NN[S]?\\s(\\p{L}+))/NN[S]?(\\W|$)");
+		//Pattern nnPattern     = Pattern.compile("\\s?((\\p{L}+)/NN[S]?\\s(\\p{L}+))/NN[S]?(\\W|$)");
+        Pattern nnPattern     = Pattern.compile("\\s?((\\p{L}+)/NN[S]?\\s(\\p{L}+)/NN[S]?)(\\W|$)");
 		Pattern nnnnpPattern  = Pattern.compile("\\s?((\\p{L}+)/NNP[S]?\\s(\\p{L}+)/NN[S]?)(\\W|$)");
 
 		m = quotePattern1.matcher(flat);
@@ -298,7 +302,7 @@ public class Preprocessor {
 		}
 		m = nnPattern.matcher(flat);
 		while (m.find()) {
-			flat = flat.replaceFirst(m.group(1),m.group(2) + "" + m.group(3));
+			flat = flat.replaceFirst(m.group(1),m.group(2) + "" + m.group(3) + "/NN");
 			m = nnPattern.matcher(flat);
 		}
 		m = nnnnpPattern.matcher(flat);
