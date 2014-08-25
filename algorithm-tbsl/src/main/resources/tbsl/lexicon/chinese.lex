@@ -4,6 +4,8 @@
 //	是  || (S DP[subject] (VP V:'是' ADJ[comp]))   || <x, l1, t, [ l1:[ | x=y ]], [ (l2,x,subject,<<e,t>,t>), (l3,y,comp,<e,t>) ], [  l2=l1, l3=l2 ],[]>
 //	是什么 || (NP NP* (S C:'什么' (VP V:'是' DP[object]))) || <x, l1, t, [ l1:[ | x=y ] ], [ (l2,y,object,<<e,t>,t>) ], [ l2=l1 ],[]>
     是 什么 || (S DP[subject] (VP V:'是' N:'什么')) || <x, l1, t, [ l1:[  | ] ], [ (l2,x,subject,<<e,t>,t>) ], [ l2=l1 ],[]>
+    在 哪里 || (S DP[subject] (VP V:'在' N:'哪里')) || <x, l1, t, [ l1:[  | ] ], [ (l2,x,subject,<<e,t>,t>) ], [ l2=l1 ],[]>
+    在 哪 || (S DP[subject] (VP V:'在' N:'哪')) || <x, l1, t, [ l1:[  | ] ], [ (l2,x,subject,<<e,t>,t>) ], [ l2=l1 ],[]>
     是 多少 || (S DP[subject] (VP V:'是' N:'多少')) || <x, l1, t, [ l1:[  | ] ], [ (l2,x,subject,<<e,t>,t>) ], [ l2=l1 ],[]>
 
 	//是否有  || (S V:'是否' C:'有' DP[dp])  || <x, l1, t, [ l1:[ | ] ], [ (l2,x,dp,<<e,t>,t>) ], [ l2=l1 ],[]>

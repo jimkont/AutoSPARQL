@@ -1,8 +1,9 @@
 package org.aksw.autosparql.tbsl.algorithm.ltag.parser;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.*;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,6 +19,7 @@ public class Preprocessor {
 	static final String[] genericReplacements = { "[!?.,;]", "" };
     static final String[] genericReplacements_zh = { "[！？。，；]", "" };
     static final String[] chineseReplacements = { "[了]", "" };
+    private static final String phrase_table_path = "./algorithm-tbsl/src/main/resources/zh_en_phrase_table.txt";
 
 	static final String[] englishReplacements = { "don't", "do not", "doesn't", "does not" };
         static final String[] hackReplacements = { " 1 "," one "," 2 "," two "," 3 "," three "," 4 "," four "," 5 "," five "," 6 "," six "," 7 "," seven ",
@@ -29,7 +31,8 @@ public class Preprocessor {
 	static boolean USE_NER;
 	static boolean VERBOSE;
 	static NER ner;
-	
+    private static Map<String, String> phraseTableMap;
+
 	public Preprocessor(boolean n) {
 		USE_NER = n;
 		VERBOSE = true;
@@ -37,8 +40,31 @@ public class Preprocessor {
 //			ner = new LingPipeNER(true); //not case sensitive best solution?
 			ner = new DBpediaSpotlightNER();
 		}
+
+        phraseTableMap = readPhraseTable(phrase_table_path);
 	}
-	
+
+    public Map<String, String> readPhraseTable(String fileName) {
+        Map<String, String> result = new HashMap<String, String>();
+
+        try{
+            java.util.Scanner sc = new Scanner(new File(fileName));
+            while ( sc.hasNext() ){
+                String line = sc.nextLine();
+                String tokens[] = line.split("\t");
+                if(tokens.length == 2){
+                    String label = tokens[0];
+                    String url = tokens[1];
+                    result.put(label, url);
+                }
+            }
+        }catch(FileNotFoundException e){
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
 	public void setVERBOSE(boolean b) {
 		VERBOSE = b;
 	}
@@ -69,9 +95,57 @@ public class Preprocessor {
 		return s;
 	}
 
-    public String condenseNN(String taggedstring){//TODO: dictionary based condense
+    // refer to
+    // Zhang, Liyi, Yazi Li, and Jian Meng. "Design of chinese word segmentation system based on improved chinese converse dictionary and reverse maximum matching algorithm." Web Information Systems–WISE 2006 Workshops. Springer Berlin Heidelberg, 2006.
+    public String condensebasedDitionary(String taggedstring){//TODO: dictionary based condens
+        boolean Changed = true;
 
+        while(Changed){
+            Changed = false;
+            //get pos & words
+            ArrayList<String> input = new ArrayList<String>();
+            ArrayList<String> pos = new ArrayList<String>();
+            for (String s : taggedstring.split(" ")) {
+                input.add(s.substring(0,s.indexOf("/")));
+                pos.add(s.substring(s.indexOf("/"), s.length()));
+            }
 
+            //condense every bigram ~ four gram which is in the dictionary
+            for(int j=4;j>=2;j--){
+                for(int i=input.size()-1;i>0;i--){
+                   //get the reversed ngram
+                   String ngram = "";
+                   for(int k=i-j+1; k>=0&&k<=i;k++){
+                       ngram += input.get(k);
+                   }
+                   if(ngram == "") continue;
+
+                   if(phraseTableMap.containsKey(ngram)){
+                       Changed = true;
+
+                       //condense the input
+                       taggedstring = "";
+                       for(int kk=0;kk<i-j+1;kk++){
+                           taggedstring += input.get(kk);
+                           taggedstring += pos.get(kk);
+                           taggedstring += " ";
+                       }
+                       taggedstring += ngram + "/NNP" + " ";
+                       for(int kk=i+1;kk<input.size();kk++){
+                           taggedstring += input.get(kk);
+                           taggedstring += pos.get(kk);
+                           taggedstring += " ";
+                       }
+
+                       taggedstring = taggedstring.trim();
+
+                       break;
+                   }
+                }
+
+                if(Changed) break;
+            }
+        }
 
         return taggedstring;
     }
@@ -263,7 +337,9 @@ public class Preprocessor {
 			condensedstring = condensedstring.replaceFirst(m.group(1),m.group(2)+"_"+m.group(3)+"/NPREP");
 		}
 
-        condensedstring = condenseNominals(condensedstring);
+        //condensedstring = condenseNominals(condensedstring);
+
+        condensedstring = condensebasedDitionary(condensedstring);
 
 		return condensedstring;
 	}
