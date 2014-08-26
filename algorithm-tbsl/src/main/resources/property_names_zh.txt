@@ -16905,7 +16905,7 @@ zypy	http://dbpedia.org/ontology/zypy
 执行制片	http://dbpedia.org/ontology/执行制片
 执行董事	http://dbpedia.org/ontology/执行董事
 执行製作	http://dbpedia.org/ontology/执行製作
-扮演者	http://dbpedia.org/ontology/扮演者
+扮演者	http://dbpedia.org/property/portrayer
 承运商	http://dbpedia.org/ontology/承运商
 承运国	http://dbpedia.org/ontology/承运国
 技术分 1 短节目	http://dbpedia.org/ontology/技术分1短节目
@@ -17262,7 +17262,7 @@ zypy	http://dbpedia.org/ontology/zypy
 日文單曲	http://dbpedia.org/ontology/日文單曲
 日文拼音	http://dbpedia.org/ontology/日文拼音
 日文譯名	http://dbpedia.org/ontology/日文譯名
-日期	http://dbpedia.org/ontology/日期
+日期	http://dbpedia.org/ontology/date
 日期格式	http://dbpedia.org/ontology/日期格式
 日本	http://dbpedia.org/ontology/日本
 日本アカデミー賞	http://dbpedia.org/ontology/日本アカデミー賞

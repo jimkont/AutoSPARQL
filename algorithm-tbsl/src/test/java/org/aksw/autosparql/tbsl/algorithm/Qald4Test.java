@@ -88,6 +88,13 @@ public class Qald4Test {
         return queries;
     }
 
+//    boolean Compare(ResultSet model, ResultSet ref){
+//        QuerySolution s = model.nextSolution();
+//
+//
+//        return false;
+//    }
+
     /**
      * @param args
      */
@@ -107,6 +114,7 @@ public class Qald4Test {
         }
 
         ArrayList<Integer> corrects = new  ArrayList<Integer>();
+        ArrayList<Integer> incorrects = new  ArrayList<Integer>();
         ArrayList<Integer> notemps = new  ArrayList<Integer>();
 
 
@@ -125,9 +133,11 @@ public class Qald4Test {
                 ResultSet rs = DBpediaKnowledgebase.INSTANCE.querySelect(ti.getQuery());
 
                 if(crs.equals(rs)){
+                    System.out.println("Correct");
                     cnt++;
                     corrects.add(i);
                 }else{
+                    incorrects.add(i);
                     System.out.println("Incorrect answer:");
                     if(crs!= null && crs.hasNext())
                         System.out.println(crs.nextSolution().toString());
@@ -155,10 +165,18 @@ public class Qald4Test {
         for(int i: corrects){
             System.out.print(i+", ");
         }
+        System.out.println();
 
-        System.out.println("No template:");
+        System.out.println("incorrect:" + incorrects.size());
+        for(int i: incorrects){
+            System.out.print(i+", ");
+        }
+        System.out.println();
+
+        System.out.println("No template:" + notemps.size());
         for(int i: notemps){
             System.out.print(i+", ");
         }
+        System.out.println();
     }
 }

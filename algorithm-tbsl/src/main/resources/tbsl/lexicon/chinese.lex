@@ -3,10 +3,13 @@
 //	是  || (S DP[subject] (VP V:'是' DP[object]))  || <x, l1, t, [ l1:[ | ], l2:[ | x=y ] ], [ (l3,x,subject,<<e,t>,t>), (l4,y,object,<<e,t>,t>) ], [  l3<l1, l4<l1, l2<scope(l3), l2<scope(l4) ],[]>
 //	是  || (S DP[subject] (VP V:'是' ADJ[comp]))   || <x, l1, t, [ l1:[ | x=y ]], [ (l2,x,subject,<<e,t>,t>), (l3,y,comp,<e,t>) ], [  l2=l1, l3=l2 ],[]>
 //	是什么 || (NP NP* (S C:'什么' (VP V:'是' DP[object]))) || <x, l1, t, [ l1:[ | x=y ] ], [ (l2,y,object,<<e,t>,t>) ], [ l2=l1 ],[]>
+//    谁 是 || (NP NP* (VP V:'是' DP[object])) || <x, l1, t, [ l1:[ | x=y ] ], [ (l2,y,object,<<e,t>,t>) ], [ l2=l1 ],[]>
+
     是 什么 || (S DP[subject] (VP V:'是' N:'什么')) || <x, l1, t, [ l1:[  | ] ], [ (l2,x,subject,<<e,t>,t>) ], [ l2=l1 ],[]>
     在 哪里 || (S DP[subject] (VP V:'在' N:'哪里')) || <x, l1, t, [ l1:[  | ] ], [ (l2,x,subject,<<e,t>,t>) ], [ l2=l1 ],[]>
     在 哪 || (S DP[subject] (VP V:'在' N:'哪')) || <x, l1, t, [ l1:[  | ] ], [ (l2,x,subject,<<e,t>,t>) ], [ l2=l1 ],[]>
     是 多少 || (S DP[subject] (VP V:'是' N:'多少')) || <x, l1, t, [ l1:[  | ] ], [ (l2,x,subject,<<e,t>,t>) ], [ l2=l1 ],[]>
+    是 谁 || (S DP[subject] (VP V:'是' N:'谁')) || <x, l1, t, [ l1:[  | ] ], [ (l2,x,subject,<<e,t>,t>) ], [ l2=l1 ],[]>
 
 	//是否有  || (S V:'是否' C:'有' DP[dp])  || <x, l1, t, [ l1:[ | ] ], [ (l2,x,dp,<<e,t>,t>) ], [ l2=l1 ],[]>
 	//是否存在  || (S V:'是否' C:'存在' DP[dp])  || <x, l1, t, [ l1:[ | ] ], [ (l2,x,dp,<<e,t>,t>) ], [ l2=l1 ],[]>

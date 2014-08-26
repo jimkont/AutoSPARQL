@@ -70,6 +70,7 @@ public class LTPPartOfSpeechTagger implements PartOfSpeechTagger{
         pos_map.put("vn", "NN");
         pos_map.put("w", ".");
         pos_map.put("wp", ".");
+        pos_map.put("ws", "NNP");
         pos_map.put("x", "x");
         pos_map.put("y", "RB");
         pos_map.put("z", "JJ");

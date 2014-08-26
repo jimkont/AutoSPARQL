@@ -111,8 +111,8 @@ public class Preprocessor {
             }
 
             //condense every bigram ~ four gram which is in the dictionary
-            for(int j=4;j>=2;j--){
-                for(int i=input.size()-1;i>0;i--){
+            for(int j=4;j>=1;j--){
+                for(int i=input.size()-1;i>=0;i--){
                    //get the reversed ngram
                    String ngram = "";
                    for(int k=i-j+1; k>=0&&k<=i;k++){
@@ -120,8 +120,10 @@ public class Preprocessor {
                    }
                    if(ngram == "") continue;
 
+                   //System.out.println(ngram);
                    if(phraseTableMap.containsKey(ngram)){
-                       Changed = true;
+
+                       if(j>1) Changed = true;
 
                        //condense the input
                        taggedstring = "";
