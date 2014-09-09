@@ -261,7 +261,8 @@ public class GrammarFilter {
 		try {	
 				for (String[] entry : entries) {
 					String anchor = entry[0];
-					String treestring = entry[1];			
+					String treestring = entry[1];
+
 					List<String> dudeStrings = new ArrayList<String>();
 					for (String s : entry[2].trim().split(";;")) {
 						if (!s.equals("")) {

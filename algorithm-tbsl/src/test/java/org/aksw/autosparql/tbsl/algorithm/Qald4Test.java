@@ -12,15 +12,21 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.net.URL;
+import java.util.Collections;
 
 import org.aksw.autosparql.tbsl.algorithm.learning.TemplateInstantiation;
 import org.aksw.autosparql.tbsl.algorithm.learning.TbslDbpedia;
 import org.aksw.autosparql.tbsl.algorithm.knowledgebase.DBpediaKnowledgebase;
 import com.hp.hpl.jena.query.ResultSet;
 import org.aksw.autosparql.tbsl.algorithm.learning.NoTemplateFoundException;
+import org.dllearner.kb.sparql.SparqlEndpoint;
+
+import org.aksw.autosparql.commons.qald.EvaluationUtils;
 
 public class Qald4Test {
 
@@ -99,6 +105,7 @@ public class Qald4Test {
      * @param args
      */
     public static void main(String[] args) {
+        SparqlEndpoint dbpediaEndpoint;
 
         //File file = new File("../DBpediaQA/benchmark/qald4/qald-4_multilingual_train_withanswers_linklabel.xml");
         File file = new File("../DBpediaQA/benchmark/qald4/qald-4_multilingual_test_withanswers_linklabel.xml");
@@ -106,7 +113,7 @@ public class Qald4Test {
         List<String> queries = readQueries(file);
 
         //only a few questions can be answered
-        //int[] ans = new int[] {4, 9, 10, 11, 12, 19, 21, 22, 23, 24, 25, 26, 27, 28, 29, 32, 33, 35, 38, 44, 46, 48,};
+//        int[] ans = new int[] {3,};
         int[] ans = new int[200];
 
         for(int i=0;i<200;i++){
@@ -117,6 +124,11 @@ public class Qald4Test {
         ArrayList<Integer> incorrects = new  ArrayList<Integer>();
         ArrayList<Integer> notemps = new  ArrayList<Integer>();
 
+        try{
+            dbpediaEndpoint = new SparqlEndpoint(new URL("http://dbpedia.org/sparql"),Collections.<String>singletonList(""), Collections.<String>emptyList());
+        } catch (MalformedURLException e){
+            throw new RuntimeException(e);
+        }
 
         int cnt = 0;
         int incnt = 0;
@@ -127,17 +139,18 @@ public class Qald4Test {
 
             System.out.println("Question"+i+": " + question);
             try {
-                ResultSet crs = DBpediaKnowledgebase.INSTANCE.querySelect(query);
-
                 TemplateInstantiation ti = TbslDbpedia.INSTANCE.answerQuestion(question);
-                ResultSet rs = DBpediaKnowledgebase.INSTANCE.querySelect(ti.getQuery());
+                String sparqlQueryString = ti.getQuery();
 
-                if(crs.equals(rs)){
+                double accuracy = EvaluationUtils.accuracy(sparqlQueryString,query, dbpediaEndpoint);
+                if(accuracy == 1.0){
                     System.out.println("Correct");
                     cnt++;
-                    corrects.add(i);
+                    corrects.add(i+1);
                 }else{
-                    incorrects.add(i);
+                    ResultSet crs = DBpediaKnowledgebase.INSTANCE.querySelect(query);
+                    ResultSet rs = DBpediaKnowledgebase.INSTANCE.querySelect(sparqlQueryString);
+                    incorrects.add(i+1);
                     System.out.println("Incorrect answer:");
                     if(crs!= null && crs.hasNext())
                         System.out.println(crs.nextSolution().toString());
@@ -148,11 +161,11 @@ public class Qald4Test {
                         System.out.println(ti.getQuery());
                 }
             }catch (NoTemplateFoundException e){
-                //e.printStackTrace();
-                notemps.add(i);
+                e.printStackTrace();
+                notemps.add(i+1);
             }
             catch (Exception e) {
-                System.out.println(e.toString());
+                e.printStackTrace();
                 incnt++;
             }
         }

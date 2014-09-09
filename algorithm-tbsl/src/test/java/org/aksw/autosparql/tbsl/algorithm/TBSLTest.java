@@ -32,9 +32,11 @@ public class TBSLTest extends TestCase
         //String question = "列出 所有 丹·布朗 的 书";
         //String question = "有多少编程语言？";
         //String question = "加拿大最大的城市？";
-        //String question = "上海的总面积";
-        //String question = "巴赫的出生地在哪？";
-        String question = "可乐是饮料么？";
+        //String question = "什么的简称是CPU";
+        //String question = "万圣节的日期？";
+        //String question = "丘百卡的扮演者是谁？";
+        //String question = "首次登顶的珠穆朗瑪峰是谁？";
+        String question = "亚伯拉罕林肯的死亡地方有​​一个网站么？";
 
 //      String question = "Is the wife of president Obama called Michelle?";
 		TemplateInstantiation ti = TbslDbpedia.INSTANCE.answerQuestion(question);

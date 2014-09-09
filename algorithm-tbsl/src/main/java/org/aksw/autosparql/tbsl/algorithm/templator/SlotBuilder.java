@@ -311,11 +311,17 @@ public class SlotBuilder {
 				} 
 				else if (pos.equals("VB")) {
                     //System.out.println("Matched VB");
-					String[] whEntry = {token,
-							"(S DP[obj] (VP DP[subj] V:'" + token + "'))",
+//					String[] whEntry = {token,
+//							"(S DP[obj] (VP DP[subj] V:'" + token + "'))",
+//							"<x,l1,t,[ l1:[|], l4:[ | SLOT_" + token + "(x,y) ] ],[(l2,x,subj,<<e,t>,t>),(l3,y,obj,<<e,t>,t>)],[ l2<l1,l3<l1,l4<scope(l2),l4<scope(l3) ],[" + symslot + "]>" +
+//									" ;; <x,l1,t,[ l1:[|], l4:[ | empty(x,y) ] ],[(l2,x,subj,<<e,t>,t>),(l3,y,obj,<<e,t>,t>)],[ l2<l1,l3<l1,l4<scope(l2),l4<scope(l3) ],[]>"};
+//
+                    String[] whEntry = {token,
+							"(S DP[obj] (VP V:'" + token + "' DP[subj]))",
 							"<x,l1,t,[ l1:[|], l4:[ | SLOT_" + token + "(x,y) ] ],[(l2,x,subj,<<e,t>,t>),(l3,y,obj,<<e,t>,t>)],[ l2<l1,l3<l1,l4<scope(l2),l4<scope(l3) ],[" + symslot + "]>" +
 									" ;; <x,l1,t,[ l1:[|], l4:[ | empty(x,y) ] ],[(l2,x,subj,<<e,t>,t>),(l3,y,obj,<<e,t>,t>)],[ l2<l1,l3<l1,l4<scope(l2),l4<scope(l3) ],[]>"};
-					result.add(whEntry);
+
+                    result.add(whEntry);
 				} 
 				else if (pos.equals("VBG") || pos.equals("VBN")) {
                     //System.out.println("Matched VBG");

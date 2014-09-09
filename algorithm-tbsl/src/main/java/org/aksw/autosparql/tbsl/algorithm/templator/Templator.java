@@ -175,7 +175,10 @@ public class Templator {
 		if (USE_NER) {
 			newtagged = pp.condenseNominals(pp.findNEs(tagged,s));
 		} 
-		else newtagged = pp.condenseNominals(tagged);
+		else {
+            newtagged = tagged;
+            //newtagged = pp.condenseNominals(tagged);
+        }
 		
 		newtagged = pp.condense(newtagged);
 		logger.debug("Preprocessed: " + newtagged);

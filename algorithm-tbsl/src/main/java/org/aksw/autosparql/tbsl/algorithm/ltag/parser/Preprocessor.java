@@ -19,7 +19,9 @@ public class Preprocessor {
 	static final String[] genericReplacements = { "[!?.,;]", "" };
     static final String[] genericReplacements_zh = { "[！？。，；]", "" };
     static final String[] chineseReplacements = { "[了]", "" };
-    private static final String phrase_table_path = "./algorithm-tbsl/src/main/resources/zh_en_phrase_table.txt";
+
+    static final String[] chineseQuestionmark = { "[吗么]", "" };
+
 
 	static final String[] englishReplacements = { "don't", "do not", "doesn't", "does not" };
         static final String[] hackReplacements = { " 1 "," one "," 2 "," two "," 3 "," three "," 4 "," four "," 5 "," five "," 6 "," six "," 7 "," seven ",
@@ -32,6 +34,9 @@ public class Preprocessor {
 	static boolean VERBOSE;
 	static NER ner;
     private static Map<String, String> phraseTableMap;
+    private static Map<String, String> propertyTableMap;
+    private static final String phrase_table_path = "./algorithm-tbsl/src/main/resources/zh_en_phrase_table.txt";
+    private static final String property_table_path = "./algorithm-tbsl/src/main/resources/property_names_zh.txt";
 
 	public Preprocessor(boolean n) {
 		USE_NER = n;
@@ -41,10 +46,11 @@ public class Preprocessor {
 			ner = new DBpediaSpotlightNER();
 		}
 
-        phraseTableMap = readPhraseTable(phrase_table_path);
+        phraseTableMap = readTable(phrase_table_path);
+        propertyTableMap = readTable(property_table_path);
 	}
 
-    public Map<String, String> readPhraseTable(String fileName) {
+    public Map<String, String> readTable(String fileName) {
         Map<String, String> result = new HashMap<String, String>();
 
         try{
@@ -65,7 +71,7 @@ public class Preprocessor {
         return result;
     }
 
-	public void setVERBOSE(boolean b) {
+    public void setVERBOSE(boolean b) {
 		VERBOSE = b;
 	}
 	
@@ -84,6 +90,7 @@ public class Preprocessor {
 		replacements.addAll(Arrays.asList(englishReplacements));
 		replacements.addAll(Arrays.asList(genericReplacements));
         replacements.addAll(Arrays.asList(genericReplacements_zh));
+        replacements.addAll(Arrays.asList(chineseQuestionmark));
         replacements.addAll(Arrays.asList(chineseReplacements));
         replacements.addAll(Arrays.asList(hackReplacements));
 
@@ -111,7 +118,7 @@ public class Preprocessor {
             }
 
             //condense every bigram ~ four gram which is in the dictionary
-            for(int j=4;j>=1;j--){
+            for(int j=4;j>1;j--){
                 for(int i=input.size()-1;i>=0;i--){
                    //get the reversed ngram
                    String ngram = "";
@@ -122,7 +129,6 @@ public class Preprocessor {
 
                    //System.out.println(ngram);
                    if(phraseTableMap.containsKey(ngram)){
-
                        if(j>1) Changed = true;
 
                        //condense the input
@@ -152,6 +158,73 @@ public class Preprocessor {
         return taggedstring;
     }
 
+    public String condensePropertybasedDitionary(String taggedstring){//TODO: dictionary based condens
+        boolean Changed = true;
+
+        while(Changed){
+            Changed = false;
+            //get pos & words
+            ArrayList<String> input = new ArrayList<String>();
+            ArrayList<String> pos = new ArrayList<String>();
+            for (String s : taggedstring.split(" ")) {
+                input.add(s.substring(0,s.indexOf("/")));
+                pos.add(s.substring(s.indexOf("/"), s.length()));
+            }
+
+            //condense every bigram ~ four gram which is in the dictionary
+            for(int j=4;j>1;j--){
+                for(int i=input.size()-1;i>=0;i--){
+                    //get the reversed ngram
+                    String ngram = "";
+                    for(int k=i-j+1; k>=0&&k<=i;k++){
+                        ngram += input.get(k);
+                    }
+                    if(ngram == "") continue;
+
+                    //System.out.println(ngram);
+                    if(propertyTableMap.containsKey(ngram)){
+                        if(j>1) Changed = true;
+
+                        //condense the input
+                        taggedstring = "";
+                        for(int kk=0;kk<i-j+1;kk++){
+                            taggedstring += input.get(kk);
+                            taggedstring += pos.get(kk);
+                            taggedstring += " ";
+                        }
+                        taggedstring += ngram + "/NN" + " ";
+                        for(int kk=i+1;kk<input.size();kk++){
+                            taggedstring += input.get(kk);
+                            taggedstring += pos.get(kk);
+                            taggedstring += " ";
+                        }
+
+                        taggedstring = taggedstring.trim();
+
+                        break;
+                    }
+                }
+
+                if(Changed) break;
+            }
+        }
+
+        return taggedstring;
+    }
+
+    public String postCondense(String taggedstring) {
+        Pattern NNNNPPattern      = Pattern.compile("^((\\p{L}+/NN)\\s(\\p{L}+/NNP))");
+        String condensedstring = taggedstring.replaceAll("``/``","").replaceAll("''/''","").replaceAll("  "," ");
+        Matcher m;
+
+        m = NNNNPPattern.matcher(condensedstring);
+        while (m.find()) {
+            if (VERBOSE) logger.debug("Replacing " + m.group(1) + " by " + m.group(2)+" 的/IN "+m.group(3));
+            condensedstring = condensedstring.replaceFirst(m.group(1),m.group(2)+" 的/IN "+m.group(3));
+        }
+        return condensedstring;
+    }
+
 	public String condense(String taggedstring) {
 		
 		/* condense: 
@@ -169,6 +242,7 @@ public class Preprocessor {
 		Pattern howAdjPattern     = Pattern.compile("(\\w+/WRB.(\\w+)(?<!many)/JJ)"); 
 		Pattern thesameasPattern  = Pattern.compile("(the/DT.same/JJ.(\\w+)/NN.as/IN)");
         Pattern themostPattern  = Pattern.compile("(最/RB.(\\p{L}+)/JJ.的/IN)");
+        Pattern pronounPattern  = Pattern.compile("(((\\p{L}+)/NN).的/IN)");
 		Pattern nprepPattern      = Pattern.compile("\\s((\\w+)/NNS?.of/IN)");
 		Pattern didPattern        = Pattern.compile("(?i)(\\s((did)|(do)|(does))/VB.?)\\s"); 
 		Pattern prepfrontPattern  = Pattern.compile("(\\A\\w+/((TO)|(IN)).)\\w+/WDT"); // TODO (Nicht ganz sauber. Bei P-Stranding immer zwei Querys, hier nur eine.)
@@ -199,7 +273,13 @@ public class Preprocessor {
         m = themostPattern.matcher(condensedstring);
         while (m.find()) {
             if (VERBOSE) logger.debug("Replacing " + m.group(1) + " by 最" + m.group(2)+"的/JJS");
-            condensedstring = condensedstring.replaceFirst(m.group(1),"最" + m.group(2)+"的/JJS");
+            condensedstring = condensedstring.replaceFirst(m.group(1),"最/RB " + m.group(2)+"的/JJS");
+        }
+
+        m = pronounPattern.matcher(condensedstring);
+        while (m.find()) {
+            if (VERBOSE) logger.debug("Replacing " + m.group(2) + m.group(3) + "/NNP ");
+            condensedstring = condensedstring.replaceFirst(m.group(2),m.group(3) + "/NNP");
         }
 
 		m = compAdjPattern.matcher(condensedstring); 
@@ -232,6 +312,9 @@ public class Preprocessor {
 			if (VERBOSE) logger.debug("Replacing " + m.group(1) + " by " + m.group(2)+"/NPREP");
 			condensedstring = condensedstring.replaceFirst(m.group(1),m.group(2)+"/NPREP");
 		}
+
+
+
 		m = didPattern.matcher(condensedstring);
 		while (m.find()) {
 			if (VERBOSE) logger.debug("Replacing " + m.group(1) + " by \"\"");
@@ -342,7 +425,8 @@ public class Preprocessor {
         //condensedstring = condenseNominals(condensedstring);
 
         condensedstring = condensebasedDitionary(condensedstring);
-
+        condensedstring = condensePropertybasedDitionary(condensedstring);
+        condensedstring = postCondense(condensedstring);
 		return condensedstring;
 	}
 
@@ -355,7 +439,7 @@ public class Preprocessor {
 		Pattern quotePattern2 = Pattern.compile("(``/``((.*)_)''/'')");
 		Pattern nnpPattern    = Pattern.compile("\\s?((\\p{L}+)/NNP[S]?\\s(\\p{L}+))/NNP[S]?(\\W|$)");
 		//Pattern nnPattern     = Pattern.compile("\\s?((\\p{L}+)/NN[S]?\\s(\\p{L}+))/NN[S]?(\\W|$)");
-        Pattern nnPattern     = Pattern.compile("\\s?((\\p{L}+)/NN[S]?\\s(\\p{L}+)/NN[S]?)(\\W|$)");
+        //Pattern nnPattern     = Pattern.compile("\\s?((\\p{L}+)/NN[S]?\\s(\\p{L}+)/NN[S]?)(\\W|$)");
 		Pattern nnnnpPattern  = Pattern.compile("\\s?((\\p{L}+)/NNP[S]?\\s(\\p{L}+)/NN[S]?)(\\W|$)");
 
 		m = quotePattern1.matcher(flat);
@@ -378,11 +462,11 @@ public class Preprocessor {
 			flat = flat.replaceFirst(m.group(1),m.group(2) + "" + m.group(3));
 			m = nnpPattern.matcher(flat);
 		}
-		m = nnPattern.matcher(flat);
-		while (m.find()) {
-			flat = flat.replaceFirst(m.group(1),m.group(2) + "" + m.group(3) + "/NN");
-			m = nnPattern.matcher(flat);
-		}
+//		m = nnPattern.matcher(flat);
+//		while (m.find()) {
+//			flat = flat.replaceFirst(m.group(1),m.group(2) + "" + m.group(3) + "/NN");
+//			m = nnPattern.matcher(flat);
+//		}
 		m = nnnnpPattern.matcher(flat);
 		while (m.find()) {
 			flat = flat.replaceFirst(m.group(1),m.group(2) + "" + m.group(3) + "/NNP" + m.group(4));

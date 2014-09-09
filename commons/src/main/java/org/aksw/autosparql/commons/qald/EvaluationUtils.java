@@ -24,7 +24,7 @@ public class EvaluationUtils {
 	public static double precision(String sparqlQueryString, String targetSPARQLQueryString, SparqlEndpoint endpoint){
 		return precision(sparqlQueryString, targetSPARQLQueryString, endpoint, null);
 	}
-	
+
 	public static double precision(String sparqlQueryString, String targetSPARQLQueryString, SparqlEndpoint endpoint, ExtractionDBCache cache){
 		Query sparqlQuery = QueryFactory.create(sparqlQueryString, Syntax.syntaxARQ);
 		sparqlQuery.setDistinct(true);
@@ -49,7 +49,36 @@ public class EvaluationUtils {
 		}
 		return precision;
 	}
-	
+
+    public static double accuracy(String sparqlQueryString, String targetSPARQLQueryString, SparqlEndpoint endpoint){
+        return accuracy(sparqlQueryString, targetSPARQLQueryString, endpoint, null);
+    }
+
+    public static double accuracy(String sparqlQueryString, String targetSPARQLQueryString, SparqlEndpoint endpoint, ExtractionDBCache cache){
+        Query sparqlQuery = QueryFactory.create(sparqlQueryString, Syntax.syntaxARQ);
+        sparqlQuery.setDistinct(true);
+        Query targetSPARQLQuery = QueryFactory.create(targetSPARQLQueryString, Syntax.syntaxARQ);
+
+        double accuracy = 0.0;
+        if(sparqlQuery.isSelectType() && targetSPARQLQuery.isSelectType()){
+            Set<RDFNode> nodes = executeSelect(sparqlQuery, endpoint, cache);
+            Set<RDFNode> targetNodes = executeSelect(targetSPARQLQuery, endpoint, cache);
+            SetView<RDFNode> intersection = Sets.intersection(nodes, targetNodes);
+            if(nodes.size() != 0 && intersection.size() == nodes.size()){
+                accuracy = 1.0;
+            }
+        } else if(sparqlQuery.isAskType() && targetSPARQLQuery.isAskType()){
+            boolean answer = executeAsk(sparqlQuery, endpoint);
+            boolean targetAnswer = executeAsk(targetSPARQLQuery, endpoint);
+            if(answer == targetAnswer){
+                accuracy = 1;
+            }
+        } else {
+            //TODO
+        }
+        return accuracy;
+    }
+
 	public static double recall(String sparqlQueryString, String targetSPARQLQueryString, SparqlEndpoint endpoint){
 		return recall(sparqlQueryString, targetSPARQLQueryString, endpoint, null);
 	}

@@ -162,6 +162,7 @@ public class LTAGTreeParser implements LTAGTreeParserConstants {
       if (cat.toString().equals("DET")) {if (true) return Category.DET;}
       if (cat.toString().equals("WH")) {if (true) return Category.WH;}
       if (cat.toString().equals("ADV")) {if (true) return Category.ADV;}
+      if (cat.toString().equals("RB")) {if (true) return Category.ADV;}
       if (cat.toString().equals("ADJ")) {if (true) return Category.ADJ;}
       if (cat.toString().equals("ADJCOMP")) {if (true) return Category.ADJCOMP;}
       if (cat.toString().equals("PART")) {if (true) return Category.PART;}

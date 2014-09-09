@@ -120,7 +120,10 @@ public class DRS2SPARQL_Converter {
             }
         }
         
-        for (Slot s : slots) if (s.getAnchor().equals("SLOT_arg")) template.addSlot(s);
+        for (Slot s : slots){
+            if (s.getAnchor().equals("SLOT_arg"))
+                template.addSlot(s);
+        }
         
         Set<SPARQL_Triple> statements = new HashSet<SPARQL_Triple>();
 

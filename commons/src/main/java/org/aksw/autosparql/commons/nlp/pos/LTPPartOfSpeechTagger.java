@@ -47,7 +47,7 @@ public class LTPPartOfSpeechTagger implements PartOfSpeechTagger{
         pos_map.put("f", "IN");
         pos_map.put("g", "g");
         pos_map.put("h", "RB");
-        pos_map.put("i", "i");
+        pos_map.put("i", "NNP");
         pos_map.put("j", "j");
         pos_map.put("k", "NN");
         pos_map.put("l", "l");
@@ -61,7 +61,7 @@ public class LTPPartOfSpeechTagger implements PartOfSpeechTagger{
         pos_map.put("o", "o");
         pos_map.put("p", "IN");
         pos_map.put("q", "q");
-        pos_map.put("r", "PRP");
+        pos_map.put("r", "NN");
         pos_map.put("s", "RB");
         pos_map.put("t", "CD");
         pos_map.put("u", "IN");
@@ -102,6 +102,7 @@ public class LTPPartOfSpeechTagger implements PartOfSpeechTagger{
                 for(int j=0;j<words.getLength();j++){
                     Element word = (Element) words.item(j);
                     String cont = word.getAttribute("cont");
+
                     String pos = word.getAttribute("pos");
                     if(pos_map.containsKey(pos))
                         pos = pos_map.get(pos);

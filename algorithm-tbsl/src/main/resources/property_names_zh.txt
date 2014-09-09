@@ -1,4 +1,5 @@
 IGN	http://dbpedia.org/property/ign
+FIFA最低排名	http://dbpedia.org/property/fifaMin
 住处	http://dbpedia.org/property/residence
 接壤	http://dbpedia.org/property/borderingstates
 入口数量	http://dbpedia.org/property/entranceCount
@@ -49,6 +50,8 @@ IGN	http://dbpedia.org/property/ign
 B边	http://dbpedia.org/ontology/bSide
 政治家	http://dbpedia.org/ontology/Politician
 专辑	http://dbpedia.org/ontology/Album
+结婚	http://dbpedia.org/ontology/spouse
+发射	http://dbpedia.org/ontology/launchPad
 BasketballPlayer	BasketballPlayer
 1data	http://dbpedia.org/ontology/1data
 1name	http://dbpedia.org/ontology/1name
@@ -14598,6 +14601,7 @@ zypy	http://dbpedia.org/ontology/zypy
 人口密度數據	http://dbpedia.org/ontology/人口密度數據
 人口年份	http://dbpedia.org/ontology/人口年份
 人口总数	http://dbpedia.org/ontology/人口总数
+人口数	http://dbpedia.org/ontology/populationTotal
 人口排位	http://dbpedia.org/ontology/人口排位
 人口排名	http://dbpedia.org/ontology/人口排名
 人口数统计时间	http://dbpedia.org/ontology/人口数统计时间
@@ -15518,7 +15522,6 @@ zypy	http://dbpedia.org/ontology/zypy
 収容人数	http://dbpedia.org/ontology/収容人数
 収録時間	http://dbpedia.org/ontology/収録時間
 发售商	http://dbpedia.org/ontology/发售商
-发射	http://dbpedia.org/ontology/发射
 发射准备时间	http://dbpedia.org/ontology/发射准备时间
 发射台	http://dbpedia.org/ontology/launchPad
 发射地点	http://dbpedia.org/ontology/发射地点
@@ -17262,7 +17265,7 @@ zypy	http://dbpedia.org/ontology/zypy
 日文單曲	http://dbpedia.org/ontology/日文單曲
 日文拼音	http://dbpedia.org/ontology/日文拼音
 日文譯名	http://dbpedia.org/ontology/日文譯名
-日期	http://dbpedia.org/ontology/date
+日期	http://dbpedia.org/property/date
 日期格式	http://dbpedia.org/ontology/日期格式
 日本	http://dbpedia.org/ontology/日本
 日本アカデミー賞	http://dbpedia.org/ontology/日本アカデミー賞

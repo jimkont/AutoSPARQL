@@ -1,18 +1,33 @@
 // TO BE
 // ------
-//	是  || (S DP[subject] (VP V:'是' DP[object]))  || <x, l1, t, [ l1:[ | ], l2:[ | x=y ] ], [ (l3,x,subject,<<e,t>,t>), (l4,y,object,<<e,t>,t>) ], [  l3<l1, l4<l1, l2<scope(l3), l2<scope(l4) ],[]>
+//	是 么 || (S DP[subject] (VP V:'是' DP[object]) PP:'么')  || <x, l1, t, [ l1:[ | ], l2:[ | x=y ] ], [ (l3,x,subject,<<e,t>,t>), (l4,y,object,<<e,t>,t>) ], [  l3<l1, l4<l1, l2<scope(l3), l2<scope(l4) ],[]>
 //	是  || (S DP[subject] (VP V:'是' ADJ[comp]))   || <x, l1, t, [ l1:[ | x=y ]], [ (l2,x,subject,<<e,t>,t>), (l3,y,comp,<e,t>) ], [  l2=l1, l3=l2 ],[]>
-//	是什么 || (NP NP* (S C:'什么' (VP V:'是' DP[object]))) || <x, l1, t, [ l1:[ | x=y ] ], [ (l2,y,object,<<e,t>,t>) ], [ l2=l1 ],[]>
-//    谁 是 || (NP NP* (VP V:'是' DP[object])) || <x, l1, t, [ l1:[ | x=y ] ], [ (l2,y,object,<<e,t>,t>) ], [ l2=l1 ],[]>
 
     是 什么 || (S DP[subject] (VP V:'是' N:'什么')) || <x, l1, t, [ l1:[  | ] ], [ (l2,x,subject,<<e,t>,t>) ], [ l2=l1 ],[]>
+    是  || (S DP[subject] (VP V:'是' DP[object]))  || <x, l1, t, [ l1:[ | ], l2:[ | x=y ] ], [ (l3,x,subject,<<e,t>,t>), (l4,y,object,<<e,t>,t>) ], [  l3<l1, l4<l1, l2<scope(l3), l2<scope(l4) ],[]>
+    有  || (S DP[subject] (VP V:'有' DP[object]))  || <x, l1, t, [ l1:[ | ], l2:[ | x=y ] ], [ (l3,x,subject,<<e,t>,t>), (l4,y,object,<<e,t>,t>) ], [  l3<l1, l4<l1, l2<scope(l3), l2<scope(l4) ],[]>
+
+    谁      || (DP N:'谁')       || <x, l1, <<e,t>,t>, [ l1:[ ?x | ] ], [], [], []>
+
+    有 哪些 || (S DP[subject] (VP V:'有' N:'哪些')) || <x, l1, t, [ l1:[  | ] ], [ (l2,x,subject,<<e,t>,t>) ], [ l2=l1 ],[]>
     在 哪里 || (S DP[subject] (VP V:'在' N:'哪里')) || <x, l1, t, [ l1:[  | ] ], [ (l2,x,subject,<<e,t>,t>) ], [ l2=l1 ],[]>
+    是 多少 || (S DP[subject] (VP V:'是' N:'多少')) || <x, l1, t, [ l1:[  | ] ], [ (l2,x,subject,<<e,t>,t>) ], [ l2=l1 ],[]>
+
     在 哪 || (S DP[subject] (VP V:'在' N:'哪')) || <x, l1, t, [ l1:[  | ] ], [ (l2,x,subject,<<e,t>,t>) ], [ l2=l1 ],[]>
     是 多少 || (S DP[subject] (VP V:'是' N:'多少')) || <x, l1, t, [ l1:[  | ] ], [ (l2,x,subject,<<e,t>,t>) ], [ l2=l1 ],[]>
     是 谁 || (S DP[subject] (VP V:'是' N:'谁')) || <x, l1, t, [ l1:[  | ] ], [ (l2,x,subject,<<e,t>,t>) ], [ l2=l1 ],[]>
 
 	//是否有  || (S V:'是否' C:'有' DP[dp])  || <x, l1, t, [ l1:[ | ] ], [ (l2,x,dp,<<e,t>,t>) ], [ l2=l1 ],[]>
 	//是否存在  || (S V:'是否' C:'存在' DP[dp])  || <x, l1, t, [ l1:[ | ] ], [ (l2,x,dp,<<e,t>,t>) ], [ l2=l1 ],[]>
+
+//    多少 || (NP N:'多少') || <x,l1,e, [ l1:[ ?c,x | count(a,x,c) ] ], [],[],[ SLOT_arg/OBJECTPROPERTY_CLASS/x ]>
+//    有 多少 || (S (VP V:'有' (DP N:'多少') DP[object]))]) || <y, l1, t, [ l1:[ | l2:[ y | ] HOWMANY y l3:[|] ] ], [ (l4,y,object,<<e,t>,t>) ], [ l4=l2 ],[  SLOT_arg/PROPERTY/y ]>
+//    有 多少 || (DP WH:'how' ADJ:'many' NP[noun]) || <y, l1, <<e,t>,t>, [ l1:[ | l2:[ y | ] HOWMANY y l3:[|] ] ], [ (l4,y,noun,<e,t>) ], [ l4=l2 ],[  SLOT_arg/RESOURCE/y ]>
+//	有 多少 || (S (VP V:'有' N:'多少') NP[noun]) || <y, l1, <<e,t>,t>, [ l1:[ | l2:[ y | ] HOWMANY y l3:[|] ] ], [ (l4,y,noun,<e,t>) ], [ l4=l2 ],[]>
+//    有 多少 || (S (VP V:'有' N:'多少') NP[noun]) || <y, l1, <<e,t>,t>, [ l1:[ | l2:[ y | ] HOWMANY y l3:[|] ] ], [ (l4,y,noun,<e,t>) ], [ l4=l2 ],[]>
+//    有 多少  || (VP V:'how' DET:'many')  || <x,l1,e, [ l1:[ | count(x) ] ], [],[],[]>
+    有 多少 || (S DP[subject] (VP V:'有' N:'多少')) || <x, l1, t, [ l1:[ | l2:[ x | ] HOWMANY y l3:[|] ] ], [ (l4,x,subject,<<e,t>,t>) ], [ l4=l2 ],[]>
+    //有 多少 || (S DP[dp] (VP V:'有' N:'多少')) || <x, l1, t, [ l1:[ | ]  ], [ (l2,x,dp,<<e,t>,t>) ], [ l2=l1 ],[]>
 
 // TO BE: YES/NO QUESTIONS
 
@@ -26,19 +41,20 @@
 //	给我 || (S (VP V:'给' (DP N:'我') DP[object])) || <x,l1,t,[ l1:[ ?x | x=y ] ],[ (l2,y,object,<<e,t>,t>) ],[ l1=l2 ],[]>
 //	说出 || (S (VP V:'说出' DP[object])) || <x,l1,t,[ l1:[ ?x | x=y ] ],[ (l2,y,object,<<e,t>,t>) ],[ l1=l2 ],[]>
 //	列举 || (S (VP V:'列举' DP[object])) || <x,l1,t,[ l1:[ ?x | x=y ] ],[ (l2,y,object,<<e,t>,t>) ],[ l1=l2 ],[]>
-	列出 || (S (VP V:'列出' DP[object])) || <x,l1,t,[ l1:[ ?x | x=y ] ],[ (l2,y,object,<<e,t>,t>) ],[ l1=l2 ],[]>
-
+	列出 所有 || (S (VP V:'列出' DET:'所有' DP[object])) || <x,l1,t,[ l1:[ ?x | x=y ] ],[ (l2,y,object,<<e,t>,t>) ],[ l1=l2 ],[]>
+	所有 || (DP DET:'所有' NP[noun]) || <y, l1, <<e,t>,t>, [ l1:[ | l2:[ y | ] EVERY y l3:[|] ] ], [ (l4,y,noun,<e,t>) ], [ l4=l2 ],[]>
 
 // DETERMINER
 // ----------
 
 //	一个  || (DP DET:'一个' NP[noun]) || <y, l1, <<e,t>,t>, [ l1:[ | l2:[ y | ] SOME y l3:[|] ] ], [ (l4,y,noun,<e,t>) ], [ l4=l2 ],[]>
-	所有 || (DP DET:'所有' NP[noun]) || <y, l1, <<e,t>,t>, [ l1:[ | l2:[ y | ] EVERY y l3:[|] ] ], [ (l4,y,noun,<e,t>) ], [ l4=l2 ],[]>
 //	每个 || (DP DET:'每个' NP[noun]) || <y, l1, <<e,t>,t>, [ l1:[ | l2:[ y | ] EVERY y l3:[|] ] ], [ (l4,y,noun,<e,t>) ], [ l4=l2 ],[]>
 //	每一个 || (DP DET:'每一个' NP[noun]) || <y, l1, <<e,t>,t>, [ l1:[ | l2:[ y | ] EVERY y l3:[|] ] ], [ (l4,y,noun,<e,t>) ], [ l4=l2 ],[]>
 //	最多 || (DP ADJ:'最多' NP[noun]) || <y, l1, <<e,t>,t>, [ l1:[ | l2:[ y | ] THEMOST y l3:[|] ] ], [ (l4,y,noun,<e,t>) ], [ l4=l2 ],[]>
 //	最大的 || (DP ADJ:'最大的' NP[noun]) || <y, l1, <<e,t>,t>, [ l1:[ | l2:[ y | ] THEMOST y l3:[|] ] ], [ (l4,y,noun,<e,t>) ], [ l4=l2 ],[]>
 	最大的 || (DP ADJ:'最大的' NP[noun]) || <y, l1, <<e,t>,t>, [ l1:[ | l2:[ y | ] THEMOST y l3:[|] ] ], [ (l4,y,noun,<e,t>) ], [ l4=l2 ],[]>
+    最 || (DP RB:'最' ADJ* NP[noun]) || <y, l1, <<e,t>,t>, [ l1:[ | l2:[ y | ] THEMOST y l3:[|] ] ], [ (l4,y,noun,<e,t>) ], [ l4=l2 ],[]>
+
 //	最少 || (DP ADJ:'最少' NP[noun]) || <y, l1, <<e,t>,t>, [ l1:[ | l2:[ y | ] THELEAST y l3:[|] ] ], [ (l4,y,noun,<e,t>) ], [ l4=l2 ],[]>
 //	一些 || (DP ADJ:'一些' NP[noun]) || <y, l1, <<e,t>,t>, [ l1:[ | l2:[ y | ] AFEW y l3:[|] ] ], [ (l4,y,noun,<e,t>) ], [ l4=l2 ],[]>
 //	某些 || (DP DET:'某些' NP[noun]) || <x, l1, <<e,t>,t>, [ l1:[ x | ] ], [ (l2,x,noun,<e,t>) ], [ l2=l1 ],[]>
@@ -50,10 +66,6 @@
 //	至多 || (DP DET:'至多' NUM[num] NP[noun]) || <y,l1,<<e,t>,t>,[l1:[ y | count_lesseq(y,x) ]],[(l2,y,noun,<e,t>),(l3,x,num,e)],[ l1=l2, l2=l3 ],[]>
 //	正好 || (DP DET:'正好' NUM[num] NP[noun]) || <y,l1,<<e,t>,t>,[l1:[ y | count_eq(y,x) ]],[(l2,y,noun,<e,t>),(l3,x,num,e)],[ l1=l2, l2=l3 ],[]>
 
-//    多少 || (NP N:'多少') || <x,l1,e, [ l1:[ ?c,x | count(a,x,c) ] ], [],[],[ SLOT_arg/OBJECTPROPERTY_CLASS/x ]>
-    有 多少 || (S (VP V:'有' N:'多少') NP[noun]) || <y, l1, <<e,t>,t>, [ l1:[ | l2:[ y | ] HOWMANY y l3:[|] ] ], [ (l4,y,noun,<e,t>) ], [ l4=l2 ],[  SLOT_arg/PROPERTY/y ]>
-//	有 多少 || (S (VP V:'有' N:'多少') NP[noun]) || <y, l1, <<e,t>,t>, [ l1:[ | l2:[ y | ] HOWMANY y l3:[|] ] ], [ (l4,y,noun,<e,t>) ], [ l4=l2 ],[]>
-//    有 多少 || (S (VP V:'有' N:'多少') NP[noun]) || <y, l1, <<e,t>,t>, [ l1:[ | l2:[ y | ] HOWMANY y l3:[|] ] ], [ (l4,y,noun,<e,t>) ], [ l4=l2 ],[]>
 
 //	其他 || (NP ADJ:'其他' NP*) || <x,l1,<e,t>,[ l1:[ | ] ], [],[],[]>
 //	总共 || (NP[ ADJ:'总共' NP[np]) || <s,l1,<e,t>,[ l1:[ ?s | sum(a,x,s) ] ], [ (l2,x,np,<e,t>) ],[ l2=l1 ],[]>
@@ -69,7 +81,7 @@
 //	最少 || (DET DET:'最少') || <y, l1, e, [ l1:[ | l2:[ y | ] THELEAST y l3:[|] ] ], [], [],[]>
 
     // NECESSARY "CHEAT"
-//	最高 || (NP ADJ:'最高' NP*) || <x, l1, e, [ l1:[ j | SLOT_high(x,j), maximum(j) ] ],[],[],[ SLOT_high/PROPERTY/height ]> ;; <x, l1, e, [ l1:[ | maximum(x) ] ], [], [],[]>
+	最高 || (NP ADJ:'最高' NP*) || <x, l1, e, [ l1:[ j | SLOT_high(x,j), maximum(j) ] ],[],[],[ SLOT_high/PROPERTY/height ]> ;; <x, l1, e, [ l1:[ | maximum(x) ] ], [], [],[]>
 
 	// COUNT
 //	多于 || (DP DET:'多于' NUM[num] NP[np]) || <y,l1,<<e,t>,t>,[ l1:[ y,c | count_greater(y,z) ] ],[(l2,y,np,<e,t>),(l3,z,num,e)],[l2=l1,l3=l1],[]> ;; <y,l1,<<e,t>,t>,[ l1:[ y | greater(y,z) ] ],[(l2,y,np,<e,t>),(l3,z,num,e)],[l2=l1,l3=l1],[]>
