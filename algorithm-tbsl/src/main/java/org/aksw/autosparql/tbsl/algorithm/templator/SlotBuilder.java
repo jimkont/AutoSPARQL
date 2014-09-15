@@ -112,7 +112,13 @@ public class SlotBuilder {
 							"(NP " + treetoken + " DP[name])",
 							"<x,l1,<e,t>,[ l1:[ | SLOT_" + tokenfluent + "(x), equal(x,y) ] ],[ (l2,y,name,<<e,t>,t>) ],[l2=l1],[" + slotP + "]>"};
 					result.add(npEntry1);
-					result.add(npEntry2);	
+					result.add(npEntry2);
+
+                    String[] dpEntry3 = {token,
+                            "(DP DP[mod] (NP " + treetoken + "))",
+                            "<x,l1,<<e,t>,t>,[ l1:[ x | SLOT_" + tokenfluent + "(x), empty(x,y) ] ],[ (l2,y,mod,<<e,t>,t>) ],[l2=l1],[" + slotP + "]>"};
+
+                    result.add(dpEntry3);
 				} 
 				else if (pos.equals("NNP") || pos.equals("NNPS")) {
 					/* DP 2 */
@@ -322,6 +328,20 @@ public class SlotBuilder {
 									" ;; <x,l1,t,[ l1:[|], l4:[ | empty(x,y) ] ],[(l2,x,subj,<<e,t>,t>),(l3,y,obj,<<e,t>,t>)],[ l2<l1,l3<l1,l4<scope(l2),l4<scope(l3) ],[]>"};
 
                     result.add(whEntry);
+
+                    String[] modEntry = {
+                            token,
+                            "(NP (VP V:'" + token + "' DP[obj]) P:' 的') NP[np])",
+                            "<x,l1,<e,t>,[ l1:[|], l4:[ | SLOT_" + token + "(x,y) ] ],[(l2,x,np,<e,t>),(l3,y,obj,<<e,t>,t>)],[ l2<l1,l3<l1,l4<scope(l2),l4<scope(l3) ],[" + symslot + "]>" };
+
+                    result.add(modEntry);
+
+                    String[] yesnoEntry = {
+                            token,
+                            "(S DP[subj] (VP V:'" + token + "'))",
+                            "<x,l1,t,[ l1:[ y | SLOT_" + token + "(x,y) ] ],[(l2,x,subj,<<e,t>,t>)],[ l2=l1 ],[" + symslot + "]>" };
+
+                    result.add(yesnoEntry);
 				} 
 				else if (pos.equals("VBG") || pos.equals("VBN")) {
                     //System.out.println("Matched VBG");

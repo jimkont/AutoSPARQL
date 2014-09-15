@@ -131,6 +131,7 @@ public class AGISTISEntityDisambiguation {
 			List<String> words = slot.getWords();
             String text = "";
             for(String word: words){
+                word = word.replace("·","");  //for chinese name
                 text = text + "<entity>"+ word + "</entity> ";
             }
 

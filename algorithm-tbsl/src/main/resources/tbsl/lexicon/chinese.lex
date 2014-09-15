@@ -20,14 +20,16 @@
 	//是否有  || (S V:'是否' C:'有' DP[dp])  || <x, l1, t, [ l1:[ | ] ], [ (l2,x,dp,<<e,t>,t>) ], [ l2=l1 ],[]>
 	//是否存在  || (S V:'是否' C:'存在' DP[dp])  || <x, l1, t, [ l1:[ | ] ], [ (l2,x,dp,<<e,t>,t>) ], [ l2=l1 ],[]>
 
-//    多少 || (NP N:'多少') || <x,l1,e, [ l1:[ ?c,x | count(a,x,c) ] ], [],[],[ SLOT_arg/OBJECTPROPERTY_CLASS/x ]>
 //    有 多少 || (S (VP V:'有' (DP N:'多少') DP[object]))]) || <y, l1, t, [ l1:[ | l2:[ y | ] HOWMANY y l3:[|] ] ], [ (l4,y,object,<<e,t>,t>) ], [ l4=l2 ],[  SLOT_arg/PROPERTY/y ]>
 //    有 多少 || (DP WH:'how' ADJ:'many' NP[noun]) || <y, l1, <<e,t>,t>, [ l1:[ | l2:[ y | ] HOWMANY y l3:[|] ] ], [ (l4,y,noun,<e,t>) ], [ l4=l2 ],[  SLOT_arg/RESOURCE/y ]>
 //	有 多少 || (S (VP V:'有' N:'多少') NP[noun]) || <y, l1, <<e,t>,t>, [ l1:[ | l2:[ y | ] HOWMANY y l3:[|] ] ], [ (l4,y,noun,<e,t>) ], [ l4=l2 ],[]>
 //    有 多少 || (S (VP V:'有' N:'多少') NP[noun]) || <y, l1, <<e,t>,t>, [ l1:[ | l2:[ y | ] HOWMANY y l3:[|] ] ], [ (l4,y,noun,<e,t>) ], [ l4=l2 ],[]>
 //    有 多少  || (VP V:'how' DET:'many')  || <x,l1,e, [ l1:[ | count(x) ] ], [],[],[]>
-    有 多少 || (S DP[subject] (VP V:'有' N:'多少')) || <x, l1, t, [ l1:[ | l2:[ x | ] HOWMANY y l3:[|] ] ], [ (l4,x,subject,<<e,t>,t>) ], [ l4=l2 ],[]>
+//    有 多少 || (S DP[subject] (VP V:'有' N:'多少')) || <x, l1, t, [ l1:[ | l2:[ x | ] HOWMANY y l3:[|] ] ], [ (l4,x,subject,<<e,t>,t>) ], [ l4=l2 ],[]>
     //有 多少 || (S DP[dp] (VP V:'有' N:'多少')) || <x, l1, t, [ l1:[ | ]  ], [ (l2,x,dp,<<e,t>,t>) ], [ l2=l1 ],[]>
+
+    多少 || (DP N:'多少' DP[dp]) || <y, l1, <<e,t>,t>, [ l1:[ | l2:[ y | ] HOWMANY y l3:[|] ] ], [ (l4,y,dp,<<e,t>,t>) ], [ l4=l2 ],[  SLOT_arg/RESOURCE/y ]>
+    有 || (S V:'有' DP[dp]) || <x, l1, t, [ l1:[ | ] ], [ (l2,x,dp,<<e,t>,t>) ], [ l2=l1 ],[]>
 
 // TO BE: YES/NO QUESTIONS
 

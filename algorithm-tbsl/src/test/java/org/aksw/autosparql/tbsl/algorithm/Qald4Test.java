@@ -113,12 +113,12 @@ public class Qald4Test {
         List<String> queries = readQueries(file);
 
         //only a few questions can be answered
-//        int[] ans = new int[] {3,};
-        int[] ans = new int[200];
-
-        for(int i=0;i<200;i++){
-            ans[i] = i;
-        }
+        int[] ans = new int[] {45,};
+//        int[] ans = new int[200];
+//
+//        for(int i=0;i<200;i++){
+//            ans[i] = i;
+//        }
 
         ArrayList<Integer> corrects = new  ArrayList<Integer>();
         ArrayList<Integer> incorrects = new  ArrayList<Integer>();

@@ -273,7 +273,7 @@ public class Preprocessor {
         m = themostPattern.matcher(condensedstring);
         while (m.find()) {
             if (VERBOSE) logger.debug("Replacing " + m.group(1) + " by 最" + m.group(2)+"的/JJS");
-            condensedstring = condensedstring.replaceFirst(m.group(1),"最/RB " + m.group(2)+"的/JJS");
+            condensedstring = condensedstring.replaceFirst(m.group(1),"最" + m.group(2)+"的/JJS");
         }
 
         m = pronounPattern.matcher(condensedstring);

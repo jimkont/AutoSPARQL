@@ -19495,7 +19495,7 @@ zypy	http://dbpedia.org/ontology/zypy
 試驗最高速度	http://dbpedia.org/ontology/試驗最高速度
 話数	http://dbpedia.org/ontology/話数
 話數	http://dbpedia.org/ontology/話數
-詹姆斯·威尔森\nowners	http://dbpedia.org/ontology/詹姆斯·威尔森Owners
+詹姆斯威尔森\nowners	http://dbpedia.org/ontology/詹姆斯威尔森Owners
 誌category	http://dbpedia.org/ontology/誌category
 語系	http://dbpedia.org/ontology/語系
 語言	http://dbpedia.org/ontology/語言
