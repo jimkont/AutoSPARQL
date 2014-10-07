@@ -32,27 +32,26 @@ public class WordNetUnpacker
 	{
 		try
 		{
-		String codeSource = clazz.getProtectionDomain().getCodeSource().getLocation().getPath();
-		logger.debug("WordNetUnpacker.getUnpackedWordNetDir: using code source "+codeSource);
-		if(!codeSource.endsWith(".jar"))
-		{
-//			logger.debug("not running from jar, no unpacking necessary");
-			try{return new File(WordNetUnpacker.class.getClassLoader().getResource(jarDir).toURI());}
-			catch (URISyntaxException e) {throw new IOException(e);}
-		}
-		try(JarFile jarFile = new JarFile(codeSource))
-		{
-			String tempDirString = System.getProperty("java.io.tmpdir");
-			if(tempDirString==null) {throw new IOException("java.io.tmpdir not set");}
-			File tempDir = new File(tempDirString);
-			if(!tempDir.exists()) {throw new IOException("temporary directory does not exist");}
-			if(!tempDir.isDirectory()) {throw new IOException("temporary directory is a file, not a directory ");}
-			File wordNetDir = new File(tempDirString+'/'+"wordnet"+ID);
-			wordNetDir.mkdir();
-			logger.debug("unpacking jarfile "+jarFile.getName());
-			copyResourcesToDirectory(jarFile, jarDir, wordNetDir.getAbsolutePath());
-			return wordNetDir;
-		}
+            String codeSource = clazz.getProtectionDomain().getCodeSource().getLocation().getPath();
+            logger.debug("WordNetUnpacker.getUnpackedWordNetDir: using code source "+codeSource);
+            if(!codeSource.endsWith(".jar"))
+            {
+    //			logger.debug("not running from jar, no unpacking necessary");
+                try{return new File(WordNetUnpacker.class.getClassLoader().getResource(jarDir).toURI());}
+                catch (URISyntaxException e) {throw new IOException(e);}
+            }
+
+            JarFile jarFile = new JarFile(codeSource);
+            String tempDirString = System.getProperty("java.io.tmpdir");
+            if(tempDirString==null) {throw new IOException("java.io.tmpdir not set");}
+            File tempDir = new File(tempDirString);
+            if(!tempDir.exists()) {throw new IOException("temporary directory does not exist");}
+            if(!tempDir.isDirectory()) {throw new IOException("temporary directory is a file, not a directory ");}
+            File wordNetDir = new File(tempDirString+'/'+"wordnet"+ID);
+            wordNetDir.mkdir();
+            logger.debug("unpacking jarfile "+jarFile.getName());
+            copyResourcesToDirectory(jarFile, jarDir, wordNetDir.getAbsolutePath());
+            return wordNetDir;
 		}
 		catch(IOException e) {throw new RuntimeException(e);}
 	}

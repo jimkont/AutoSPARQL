@@ -210,9 +210,13 @@ public class UriDisambiguation {
 				if ( !res.uri.trim().isEmpty() ) resources.add(res);
 			}
 		}
-		catch (SolrServerException|SolrException e ) {
+		catch (SolrServerException e ) {
 			throw new RuntimeException("exception with query:\n"+query, e);
-		}				
+		}
+        catch (SolrException e) {
+            throw new RuntimeException("exception with query:\n"+query, e);
+        }
+
 		return resources;
 	}
 	
